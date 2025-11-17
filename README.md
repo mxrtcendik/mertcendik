@@ -13,11 +13,11 @@ My personal website built with Next.js, TypeScript, and MDX. Features MDX suppor
 - Tailwind CSS for styling
 - Fully responsive
 
-## Getting Started
+## Getting started
 
 ### Prerequisites
 
-- Node.js 18+ or Bun
+- Node.js 20+
 - Package manager: npm, yarn, pnpm, or bun
 
 ### Installation
@@ -69,8 +69,8 @@ Create `.mdx` files in the `content/blog/` directory with frontmatter:
 
 ```mdx
 ---
-title: My First Post
-date: 2024-01-01
+title: My first blog post
+date: 2025-11-17
 ---
 
 Your blog post content here.
@@ -81,37 +81,12 @@ Your blog post content here.
 
 ## Videos
 
-<Video src="/video.mp4" title="My Video" />
+<Video src="/video.mp4" title="My video" />
 
 ## YouTube
 
-<YouTube id="video-id" title="Video Title" />
+<YouTube id="video-id" title="Video title" />
 ```
-
-## Project Structure
-
-```
-.
-├── app/              # Next.js app directory
-│   ├── blog/        # Blog post pages
-│   └── ...
-├── components/      # React components
-│   ├── mdx-components.tsx  # MDX custom components
-│   └── ...
-├── content/         # Blog posts (MDX files)
-│   └── blog/
-├── lib/             # Utilities and constants
-│   ├── blog.ts      # Blog post utilities
-│   └── constants.ts # Personal info, projects, etc.
-└── public/          # Static assets
-```
-
-## Customization
-
-- **Styling**: Edit `app/globals.css` for theme customization
-- **Components**: Modify components in `components/` directory
-- **Layout**: Update `app/layout.tsx` for global layout changes
-- **Blog**: Customize blog utilities in `lib/blog.ts`
 
 ## Building for production
 
