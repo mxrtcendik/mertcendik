@@ -56,7 +56,7 @@ export const metadata: Metadata = {
 5. Run the development server:
 
 ```bash
-bun dev
+bun run dev
 ```
 
 6. Open [http://localhost:3000](http://localhost:3000) in your browser.
@@ -114,7 +114,7 @@ Your blog post content here.
 ## Building for production
 
 ```bash
-bun build
+bun run build
 ```
 
 ## Tech stack
