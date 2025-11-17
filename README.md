@@ -1,3 +1,5 @@
+![Preview](assets/image.png)
+
 My personal website built with Next.js, TypeScript, and MDX. Features MDX support for blog posts with image and video capabilities.
 
 ## Features
