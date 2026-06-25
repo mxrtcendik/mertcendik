@@ -54,4 +54,3 @@ cloudflare-env.d.ts
 
 wrangler.jsonc
 open-next.config.ts
-package-lock.json
