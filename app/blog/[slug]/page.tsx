@@ -3,14 +3,12 @@ import { ErrorBoundary } from "@/components/error-boundary";
 import { Header } from "@/components/header";
 import { mdxImageComponents } from "@/components/mdx-components";
 import { PostNavigation } from "@/components/post-navigation";
-import { ReadingProgress } from "@/components/reading-progress";
 import { SharePost } from "@/components/share-post";
 import { Video } from "@/components/video";
-import { ViewCounter } from "@/components/view-counter";
 import { YouTube } from "@/components/youtube";
 import { getBlogPost, getBlogPosts } from "@/lib/blog";
 import { personalInfo } from "@/lib/constants";
-import { Clock } from "lucide-react";
+import { ClockIcon } from "@phosphor-icons/react/ssr";
 import { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Image from "next/image";
@@ -37,7 +35,9 @@ export async function generateMetadata({
     return {};
   }
 
-  const description = post.content.slice(0, 160).replace(/\s+/g, " ").trim();
+  const description = post.description;
+  const url = `${personalInfo.baseUrl}/blog/${slug}`;
+  const image = `${url}/opengraph-image`;
 
   return {
     title: post.title,
@@ -47,13 +47,15 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime: post.date,
-      url: `${personalInfo.baseUrl}/blog/${slug}`,
+      url,
       authors: [personalInfo.name],
+      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description,
+      images: [image],
     },
   };
 }
@@ -93,7 +95,6 @@ export default async function BlogPost({
 
   return (
     <ErrorBoundary>
-      <ReadingProgress />
       <Header />
       <article className="mt-12 space-y-6">
         <script
@@ -123,11 +124,10 @@ export default async function BlogPost({
             )}
             {post.readingTime && (
               <div className="flex items-center gap-1">
-                <Clock className="size-3.5" />
+                <ClockIcon className="size-3.5" />
                 <span>{post.readingTime}</span>
               </div>
             )}
-            <ViewCounter slug={slug} increment />
             <SharePost />
           </div>
         </div>

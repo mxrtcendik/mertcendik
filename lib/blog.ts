@@ -4,7 +4,25 @@ import matter from "gray-matter";
 import path from "path";
 import type { BlogPost } from "./types";
 
-const postsDirectory = path.join(process.cwd(), "content/blog");
+const postsDirectory = path.join(
+  /*turbopackIgnore: true*/ process.cwd(),
+  "content",
+  "blog"
+);
+
+function getPostDescription(content: string, description?: unknown) {
+  if (typeof description === "string" && description.trim()) {
+    return description.trim();
+  }
+
+  return content
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/<[^>]+>/g, "")
+    .replace(/[#>*_~`[\]()!-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 160);
+}
 
 export function getBlogPosts(): BlogPost[] {
   if (!fs.existsSync(postsDirectory)) {
@@ -16,7 +34,10 @@ export function getBlogPosts(): BlogPost[] {
     .filter((name) => name.endsWith(".mdx") || name.endsWith(".md"))
     .map((fileName) => {
       const slug = fileName.replace(/\.(mdx|md)$/, "");
-      const fullPath = path.join(postsDirectory, fileName);
+      const fullPath = path.join(
+        /*turbopackIgnore: true*/ postsDirectory,
+        fileName
+      );
       const fileContents = fs.readFileSync(fullPath, "utf8");
       const { data, content } = matter(fileContents);
 
@@ -24,6 +45,7 @@ export function getBlogPosts(): BlogPost[] {
         slug,
         title: data.title || slug,
         date: data.date ? new Date(data.date).toISOString() : "",
+        description: getPostDescription(content, data.description),
         content,
         readingTime: calculateReadingTime(content),
       };
@@ -34,8 +56,14 @@ export function getBlogPosts(): BlogPost[] {
 }
 
 export function getBlogPost(slug: string): BlogPost | null {
-  const mdxPath = path.join(postsDirectory, `${slug}.mdx`);
-  const mdPath = path.join(postsDirectory, `${slug}.md`);
+  const mdxPath = path.join(
+    /*turbopackIgnore: true*/ postsDirectory,
+    `${slug}.mdx`
+  );
+  const mdPath = path.join(
+    /*turbopackIgnore: true*/ postsDirectory,
+    `${slug}.md`
+  );
 
   let fullPath: string;
   if (fs.existsSync(mdxPath)) {
@@ -53,6 +81,7 @@ export function getBlogPost(slug: string): BlogPost | null {
     slug,
     title: data.title || slug,
     date: data.date ? new Date(data.date).toISOString() : "",
+    description: getPostDescription(content, data.description),
     content,
     readingTime: calculateReadingTime(content),
   };

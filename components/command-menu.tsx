@@ -6,31 +6,29 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Command } from "cmdk";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  FileText,
-  Folder,
-  Github,
-  Home,
-  Instagram,
-  Linkedin,
-  Loader2,
-  Moon,
-  Rss,
-  Sun,
-  Twitter,
-} from "lucide-react";
+  FileTextIcon,
+  FolderIcon,
+  GithubLogoIcon,
+  HouseIcon,
+  LinkedinLogoIcon,
+  CircleNotchIcon,
+  MoonIcon,
+  RssIcon,
+  SunIcon,
+  XLogoIcon,
+} from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 const socialIcons: Record<string, React.ReactNode> = {
-  GitHub: <Github className="size-4" />,
-  X: <Twitter className="size-4" />,
-  LinkedIn: <Linkedin className="size-4" />,
-  Instagram: <Instagram className="size-4" />,
+  GitHub: <GithubLogoIcon className="size-4" />,
+  X: <XLogoIcon className="size-4" />,
+  LinkedIn: <LinkedinLogoIcon className="size-4" />,
 };
 
 const itemClass =
-  "flex cursor-pointer items-center gap-2.5 rounded-md px-3 py-2 text-sm hover:bg-accent aria-selected:bg-accent";
+  "text-foreground flex cursor-pointer items-center gap-2.5 rounded-md px-3 py-2 text-sm hover:bg-muted aria-selected:bg-muted";
 
 export function CommandMenu() {
   const [open, setOpen] = useState(false);
@@ -46,7 +44,7 @@ export function CommandMenu() {
       .then((res) => res.json())
       .then((data) => {
         if (mounted) {
-          setPosts(data);
+          setPosts(Array.isArray(data) ? (data as BlogPost[]) : []);
           setIsLoading(false);
         }
       })
@@ -128,8 +126,18 @@ export function CommandMenu() {
                           onSelect={() => run(() => router.push("/"))}
                           className={itemClass}
                         >
-                          <Home className="size-4" />
+                          <HouseIcon className="size-4" />
                           Home
+                        </Command.Item>
+                      </motion.div>
+                      <motion.div>
+                        <Command.Item
+                          value="blog"
+                          onSelect={() => run(() => router.push("/blog"))}
+                          className={itemClass}
+                        >
+                          <FileTextIcon className="size-4" />
+                          Blog
                         </Command.Item>
                       </motion.div>
                       <motion.div>
@@ -138,7 +146,7 @@ export function CommandMenu() {
                           onSelect={() => run(() => router.push("/rss.xml"))}
                           className={itemClass}
                         >
-                          <Rss className="size-4" />
+                          <RssIcon className="size-4" />
                           RSS Feed
                         </Command.Item>
                       </motion.div>
@@ -146,7 +154,7 @@ export function CommandMenu() {
 
                     {isLoading ? (
                       <motion.div className="text-muted-foreground flex items-center justify-center gap-2 py-4 text-sm">
-                        <Loader2 className="size-4 animate-spin" />
+                        <CircleNotchIcon className="size-4 animate-spin" />
                         Loading posts...
                       </motion.div>
                     ) : (
@@ -164,7 +172,7 @@ export function CommandMenu() {
                                 }
                                 className={itemClass}
                               >
-                                <FileText className="size-4" />
+                                <FileTextIcon className="size-4" />
                                 {post.title}
                               </Command.Item>
                             </motion.div>
@@ -186,7 +194,7 @@ export function CommandMenu() {
                             }
                             className={itemClass}
                           >
-                            <Folder className="size-4" />
+                            <FolderIcon className="size-4" />
                             {project.name}
                           </Command.Item>
                         </motion.div>
@@ -207,7 +215,7 @@ export function CommandMenu() {
                             className={itemClass}
                           >
                             {socialIcons[link.name] ?? (
-                              <Folder className="size-4" />
+                              <FolderIcon className="size-4" />
                             )}
                             {link.name}
                           </Command.Item>
@@ -225,7 +233,7 @@ export function CommandMenu() {
                           onSelect={() => run(() => setTheme("light"))}
                           className={itemClass}
                         >
-                          <Sun className="size-4" />
+                          <SunIcon className="size-4" />
                           Light Mode
                         </Command.Item>
                       </motion.div>
@@ -235,7 +243,7 @@ export function CommandMenu() {
                           onSelect={() => run(() => setTheme("dark"))}
                           className={itemClass}
                         >
-                          <Moon className="size-4" />
+                          <MoonIcon className="size-4" />
                           Dark Mode
                         </Command.Item>
                       </motion.div>

@@ -26,17 +26,12 @@ export function PostList({ posts }: { posts: BlogPost[] }) {
             href={`/blog/${post.slug}`}
             className="hover:bg-muted-foreground/10 block rounded-lg p-4 transition-colors"
           >
-            <div className="text-base font-medium">{post.title}</div>
-            <div className="text-muted-foreground mt-0.5 flex items-center gap-2 text-sm">
-              {post.date && (
-                <span>
-                  {new Date(post.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    timeZone: "UTC",
-                  })}
-                </span>
+            <div className="space-y-2">
+              <div className="text-base font-medium">{post.title}</div>
+              {post.description && (
+                <p className="text-muted-foreground line-clamp-2 text-sm leading-relaxed">
+                  {post.description}
+                </p>
               )}
             </div>
           </Link>

@@ -3,8 +3,6 @@ import { ErrorBoundary } from "@/components/error-boundary";
 import { SkipToContent } from "@/components/skip-to-content";
 import { ThemeProvider } from "@/components/theme-provider";
 import { personalInfo } from "@/lib/constants";
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -60,7 +58,7 @@ export default function RootLayout({
     jobTitle: personalInfo.title,
     sameAs: [
       "https://github.com/mxrtcendik",
-      "https://x.com/mxrtcendik",
+      "https://x.com/mrtcendik",
       "https://linkedin.com/in/mertcendik",
     ],
   };
@@ -87,8 +85,6 @@ export default function RootLayout({
             <main id="main-content" className="mx-auto max-w-3xl px-4 py-12">
               {children}
             </main>
-            <Analytics />
-            <SpeedInsights />
           </ErrorBoundary>
         </ThemeProvider>
       </body>

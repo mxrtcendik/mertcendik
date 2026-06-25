@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
+import { CheckIcon, CopyIcon } from "@phosphor-icons/react";
 import { useRef, useState } from "react";
 
 interface CodeBlockProps {
@@ -58,9 +58,9 @@ export function CodeBlock({ children, className }: CodeBlockProps) {
         title="Copy code"
       >
         {copied ? (
-          <Check className="h-4 w-4 text-green-500" />
+          <CheckIcon className="h-4 w-4 text-green-500" />
         ) : (
-          <Copy className="h-4 w-4" />
+          <CopyIcon className="h-4 w-4" />
         )}
       </button>
     </div>

@@ -11,18 +11,15 @@ My personal website built with Next.js, TypeScript, and MDX.
 - MDX support: Write posts in Markdown with React components
 - Syntax highlighting: Code blocks with `rehype-highlight`
 - Reading time: Auto-calculated reading time estimates
-- View counter: Real-time page views using Upstash Redis
 - Media: Optimized images and video components (local & YouTube)
 - RSS feed: Automatically generated RSS 2.0 feed
 - Command menu: `Cmd+K` interface for quick navigation (built with `cmdk`)
 - Animations: Smooth page transitions and micro-interactions with Framer Motion
-- Newsletter: Email subscription form with Resend
+- Newsletter: Email subscription form with Buttondown
 - Share: Copy link functionality with visual feedback
-- Progress bar: Reading progress indicator on blog posts
 - SEO: Optimized metadata, Open Graph, JSON-LD, and sitemap
 - Accessibility: Semantic HTML, ARIA labels, skip-to-content, and reduced motion support
 - Performance: Optimized fonts (`next/font`), analytics, and speed insights
-- Security: Configured security headers (HSTS, X-Frame-Options, etc.)
 
 ## Tech stack
 
@@ -31,10 +28,9 @@ My personal website built with Next.js, TypeScript, and MDX.
 - Styling: Tailwind CSS v4 + shadcn/ui
 - Animations: Framer Motion
 - Content: MDX
-- Database: Upstash Redis (for view counts)
-- Email: Resend
+- Newsletter: Buttondown
 - Forms: React Hook Form + Zod
-- Icons: Lucide React
+- Icons: Phosphor Icons
 
 ## Getting started
 
@@ -66,12 +62,9 @@ My personal website built with Next.js, TypeScript, and MDX.
    cp .env.example .env.local
    ```
 
-   | Variable                   | Description                           |
-   | -------------------------- | ------------------------------------- |
-   | `RESEND_API_KEY`           | API key for sending emails via Resend |
-   | `VIEW_COUNTER_ENABLED`     | Set to `true` to enable view counting |
-   | `UPSTASH_REDIS_REST_URL`   | Redis URL for view counts             |
-   | `UPSTASH_REDIS_REST_TOKEN` | Redis token for view counts           |
+   | Variable             | Description                          |
+   | -------------------- | ------------------------------------ |
+   | `BUTTONDOWN_API_KEY` | API key for Buttondown subscriptions |
 
 4. Configuration
 
@@ -102,7 +95,7 @@ Create new `.mdx` files in the `content/blog/` directory. Use the following fron
 ````mdx
 ---
 title: "Your post title"
-date: "2025-11-26"
+date: "2026-06-25"
 ---
 
 Write your post content here...

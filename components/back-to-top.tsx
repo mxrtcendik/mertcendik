@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUp } from "lucide-react";
+import { ArrowUpIcon } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 
 export function BackToTop() {
@@ -32,7 +32,7 @@ export function BackToTop() {
       aria-label="Back to top"
       title="Back to top"
     >
-      <ArrowUp className="h-5 w-5" />
+      <ArrowUpIcon className="h-5 w-5" />
     </button>
   );
 }

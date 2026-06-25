@@ -1,17 +1,40 @@
-import { personalInfo } from "@/lib/constants";
-import { Resend } from "resend";
 import * as z from "zod";
 
-const apiKey = process.env.RESEND_API_KEY;
-const resend = apiKey ? new Resend(apiKey) : null;
+const buttondownApiKey = process.env.BUTTONDOWN_API_KEY;
 
 const formSchema = z.object({
   email: z.email(),
 });
 
+function getButtondownErrorMessage(data: unknown) {
+  if (!data || typeof data !== "object") {
+    return "Failed to subscribe. Please try again later.";
+  }
+
+  const error = data as Record<string, unknown>;
+
+  if (typeof error.detail === "string") {
+    return error.detail;
+  }
+
+  if (Array.isArray(error.email_address) && typeof error.email_address[0] === "string") {
+    return error.email_address[0];
+  }
+
+  if (Array.isArray(error.email) && typeof error.email[0] === "string") {
+    return error.email[0];
+  }
+
+  if (typeof error.message === "string") {
+    return error.message;
+  }
+
+  return "Failed to subscribe. Please try again later.";
+}
+
 export async function POST(req: Request) {
-  if (!resend) {
-    console.warn("[Newsletter] Resend API key not configured");
+  if (!buttondownApiKey) {
+    console.warn("[Newsletter] Buttondown API key not configured");
     return Response.json(
       { error: "Newsletter service is not configured" },
       { status: 503 }
@@ -28,30 +51,21 @@ export async function POST(req: Request) {
 
     const { email } = result.data;
 
-    await resend.contacts.create({
-      email,
-      firstName: "",
-      lastName: "",
-      unsubscribed: false,
+    const response = await fetch("https://api.buttondown.com/v1/subscribers", {
+      method: "POST",
+      headers: {
+        Authorization: `Token ${buttondownApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email_address: email }),
     });
 
-    await resend.emails.send({
-      from: `Newsletter <newsletter@${personalInfo.baseUrl.replace("https://", "")}>`,
-      to: email,
-      subject: "Welcome to my newsletter!",
-      html: `
-        <h1>Thanks for subscribing!</h1>
-        <p>You've successfully subscribed to my newsletter. I'll keep you updated with my latest posts and projects.</p>
-        <p>Best,<br>${personalInfo.name}</p>
-      `,
-    });
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      const message = getButtondownErrorMessage(data);
 
-    await resend.emails.send({
-      from: `Newsletter <newsletter@${personalInfo.baseUrl.replace("https://", "")}>`,
-      to: personalInfo.email,
-      subject: "New newsletter subscription",
-      text: `New subscriber: ${email}`,
-    });
+      return Response.json({ error: message }, { status: response.status });
+    }
 
     return Response.json({ success: true });
   } catch (error) {

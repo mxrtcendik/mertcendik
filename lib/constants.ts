@@ -4,9 +4,9 @@ export const personalInfo: PersonalInfo = {
   name: "Mert Cendik",
   title: "Design Engineer",
   about:
-    "I'm a Design Engineer crafting fast, reliable, production-ready software. I care deeply about performance, DX, and building things that truly ship.",
-  email: "mert@mertcendik.dev",
-  baseUrl: "https://mertcendik.dev",
+    "I'm a Design Engineer who likes to build interfaces that feel and look right. I care deeply about performance, DX, and building things that truly ship. I'm also a coffee addict and a music lover.",
+  email: "mertcendik@proton.me",
+  baseUrl: "https://cendik.dev",
 };
 
 export const projects: Project[] = [
@@ -14,31 +14,21 @@ export const projects: Project[] = [
     name: "flarelinker",
     description:
       "A minimal, production-ready URL shortener built as a Cloudflare Worker. Open-source and free to use.",
-    url: "https://go.mertcendik.dev/flarelinker",
-  },
-  {
-    name: "Lagoonte",
-    description:
-      "AI-powered monitoring, DDoS protection and more for your website. Currently in active development.",
-    url: "https://lagoonte.com/",
+    url: "https://github.com/mxrtcendik/flarelinker",
   },
 ];
 
 export const socialLinks: SocialLink[] = [
   {
     name: "GitHub",
-    url: "https://go.mertcendik.dev/github",
+    url: "https://github.com/mxrtcendik",
   },
   {
     name: "X",
-    url: "https://go.mertcendik.dev/twitter",
+    url: "https://x.com/mrtcendik",
   },
   {
     name: "LinkedIn",
-    url: "https://go.mertcendik.dev/linkedin",
-  },
-  {
-    name: "Instagram",
-    url: "https://go.mertcendik.dev/instagram",
+    url: "https://linkedin.com/in/mertcendik",
   },
 ];

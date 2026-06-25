@@ -3,8 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  CheckCircleIcon,
+  CircleNotchIcon,
+  XCircleIcon,
+} from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Loader2, XCircle } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -14,6 +18,22 @@ const formSchema = z.object({
 });
 
 type FormValues = z.infer<typeof formSchema>;
+
+function getErrorMessage(error: unknown) {
+  if (typeof error === "string") {
+    return error;
+  }
+
+  if (error && typeof error === "object" && "message" in error) {
+    const message = (error as { message?: unknown }).message;
+
+    if (typeof message === "string") {
+      return message;
+    }
+  }
+
+  return "Something went wrong. Please try again.";
+}
 
 export function Newsletter() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,19 +66,18 @@ export function Newsletter() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          result.error || "Something went wrong. Please try again."
-        );
+        const responseError =
+          result && typeof result === "object" && "error" in result
+            ? result.error
+            : result;
+
+        throw new Error(getErrorMessage(responseError));
       }
 
       setSuccess(true);
       reset();
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Something went wrong. Please try again."
-      );
+      setError(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }
@@ -73,7 +92,7 @@ export function Newsletter() {
         Newsletter
       </h2>
       <p className="text-muted-foreground">
-        Stay updated with my latest posts and projects.
+        Stay updated with my latest posts and projects. No spam, ever.
       </p>
 
       <AnimatePresence mode="wait">
@@ -87,7 +106,7 @@ export function Newsletter() {
             role="status"
             aria-live="polite"
           >
-            <Check className="size-5 shrink-0" />
+            <CheckCircleIcon className="size-5 shrink-0" />
             <span>Successfully subscribed! Check your email to confirm.</span>
           </motion.div>
         ) : (
@@ -115,7 +134,7 @@ export function Newsletter() {
                 <Button type="submit" disabled={isSubmitting}>
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="size-4 animate-spin" />
+                      <CircleNotchIcon className="size-4 animate-spin" />
                       <span className="sr-only">Subscribing...</span>
                     </>
                   ) : (
@@ -148,7 +167,7 @@ export function Newsletter() {
                   role="alert"
                   aria-live="assertive"
                 >
-                  <XCircle className="size-4 shrink-0" />
+                  <XCircleIcon className="size-4 shrink-0" />
                   <span>{error}</span>
                 </motion.div>
               )}

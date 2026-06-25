@@ -1,12 +1,13 @@
+"use client";
+
 import { socialLinks } from "@/lib/constants";
-import { Rss } from "lucide-react";
+import { RssIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 
 export function More() {
   const xLink = socialLinks.find((link) => link.name === "X");
   const githubLink = socialLinks.find((link) => link.name === "GitHub");
   const linkedinLink = socialLinks.find((link) => link.name === "LinkedIn");
-  const instagramLink = socialLinks.find((link) => link.name === "Instagram");
 
   return (
     <section className="space-y-4">
@@ -33,8 +34,8 @@ export function More() {
           >
             GitHub
           </Link>
-        )}
-        . I also have{" "}
+        )}{" "}
+        as well as my{" "}
         {linkedinLink && (
           <Link
             href={linkedinLink.url}
@@ -43,17 +44,6 @@ export function More() {
             className="underline underline-offset-4"
           >
             LinkedIn
-          </Link>
-        )}{" "}
-        and{" "}
-        {instagramLink && (
-          <Link
-            href={instagramLink.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-4"
-          >
-            Instagram
           </Link>
         )}
         .
@@ -64,7 +54,7 @@ export function More() {
         rel="noopener noreferrer"
         className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors"
       >
-        <Rss className="h-4 w-4" />
+        <RssIcon className="h-4 w-4" />
         RSS Feed
       </Link>
     </section>

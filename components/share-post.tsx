@@ -1,7 +1,7 @@
 "use client";
 
+import { CheckCircleIcon, LinkIcon } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Link as LinkIcon } from "lucide-react";
 import { useState } from "react";
 
 const iconVariants = {
@@ -85,7 +85,7 @@ export function SharePost() {
               exit="exit"
               className="absolute inset-0 flex items-center justify-center"
             >
-              <Check className="size-3.5 text-green-500" />
+              <CheckCircleIcon className="size-3.5 text-green-500" />
             </motion.div>
           ) : (
             <motion.div

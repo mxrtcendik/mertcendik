@@ -1,7 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
-
 export const alt = "Mert Cendik";
 export const size = {
   width: 1200,
@@ -12,7 +10,7 @@ export const contentType = "image/png";
 
 export default async function Image() {
   const interSemiBold = await fetch(
-    "https://cdn.jsdelivr.net/npm/@fontsource/inter@5.2.8/files/inter-latin-600-normal.woff"
+    "https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-600-normal.woff"
   ).then((res) => {
     if (!res.ok) throw new Error("Failed to fetch font");
     return res.arrayBuffer();

@@ -16,4 +16,3 @@ export function YouTube({ id, title }: YouTubeProps) {
     </div>
   );
 }
-

@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -22,10 +22,14 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(isLight ? "dark" : "light")}
-      className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring cursor-pointer"
+      className="text-muted-foreground hover:text-foreground focus-visible:ring-ring cursor-pointer transition-colors focus-visible:ring-1 focus-visible:outline-none"
       aria-label="Toggle theme"
     >
-      {isLight ? <Sun className="size-5" /> : <Moon className="size-5" />}
+      {isLight ? (
+        <SunIcon className="size-5" />
+      ) : (
+        <MoonIcon className="size-5" />
+      )}
     </button>
   );
 }
