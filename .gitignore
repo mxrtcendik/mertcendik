@@ -49,8 +49,3 @@ bun.lock
 .wrangler
 .dev.vars*
 !.dev.vars.example
-
-cloudflare-env.d.ts
-
-wrangler.jsonc
-open-next.config.ts

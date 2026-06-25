@@ -1,0 +1,35 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": ".open-next/worker.js",
+	"name": "mertcendik",
+	"compatibility_date": "2026-06-25",
+	"compatibility_flags": [
+		"nodejs_compat",
+		"global_fetch_strictly_public"
+	],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"services": [
+		{
+			// Self-reference service binding, the service name must match the worker name
+			// see https://opennext.js.org/cloudflare/caching
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "mertcendik"
+		}
+	],
+	"r2_buckets": [
+		{
+			// R2 incremental cache for OpenNext
+			// Create this bucket with: npx wrangler r2 bucket create mertcendik-next-cache
+			"binding": "NEXT_INC_CACHE_R2_BUCKET",
+			"bucket_name": "mertcendik-next-cache"
+		}
+	],
+	"images": {
+		// Enable image optimization
+		// see https://opennext.js.org/cloudflare/howtos/image
+		"binding": "IMAGES"
+	}
+}
