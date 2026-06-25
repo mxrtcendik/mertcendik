@@ -54,3 +54,5 @@ cloudflare-env.d.ts
 
 wrangler.jsonc
 open-next.config.ts
+
+!.env.example
