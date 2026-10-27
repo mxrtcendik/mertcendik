@@ -1,0 +1,37 @@
+---
+title: Watch the First Frames
+date: 2026-10-24
+description: A transition feels late when it hesitates at the start.
+---
+
+Hover each track. Both take 400ms. One of them feels late.
+
+<EasingDemo />
+
+`ease-in` waits, then rushes to catch up. You judge the transition in those first frames, so the wait is the whole impression. A dropdown with `ease-in` at 300ms feels heavier than the same dropdown with ease-out at 300ms. The duration did not change. The delay moved to the moment people are watching.
+
+I do not use `ease-in` on interface motion. What I use depends on the job.
+
+Entering or leaving uses ease-out. The element answers, then settles. Something already on screen that is moving or morphing uses ease-in-out, so it accelerates and decelerates instead of slamming into the end. A hover or a color change uses `ease`. A constant motion, a marquee or a progress fill, uses `linear`.
+
+The built-in curves are too gentle for UI. I keep three:
+
+```css
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+```
+
+`--ease-drawer` is the sheet curve from Ionic. It comes in fast and settles, which is what a panel from the bottom of the screen should do. I would rather take a curve that has already been tuned than draw one that looks right on a graph and wrong in the product. [easing.dev](https://easing.dev) and [easings.co](https://easings.co) are the places I look before I invent one.
+
+Duration is the other half, and the numbers I end up with are shorter than my first guess. A press is 100–160ms. A tooltip or a small popover is 125–200ms. A menu is 150–250ms. A dialog or a drawer is 200–500ms, and only the larger travel gets the top of that range. A menu at 180ms feels quicker than the same menu at 400ms. The work is the same. The impression is not.
+
+Enter and exit do not have to share a duration. The hold-to-confirm in the next post fills for about two seconds while you decide, on `linear`, and snaps back in 200ms if you let go. Slow while the person is choosing. Fast once the interface is answering.
+
+Springs are for a different problem. A drag, a gesture someone can reverse halfway, anything that should keep its speed when interrupted. A CSS keyframe starts over from zero when you interrupt it. A transition can retarget. A spring keeps the current velocity and settles from there. That is why a drawer you flick closed feels right on a spring.
+
+I still would not spring a menu opened from the keyboard. The count from the first post wins. A good curve on an action you repeat all day is still a delay.
+
+When a transition feels wrong and I cannot say why, I slow it to four or five times its duration, or step through it in the Animations panel. At full speed, a bad origin, a crossfade that shows two objects, and a curve that stalls at the start all hide. Slowed down, they are obvious. I fix it there, then put the duration back.

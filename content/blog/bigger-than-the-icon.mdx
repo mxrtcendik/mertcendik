@@ -1,0 +1,34 @@
+---
+title: Bigger Than the Icon
+date: 2026-10-27T08:00:00.000Z
+description: The icon can be 16px. The thing you press should not.
+---
+
+Try both. The mark is the same size.
+
+<HitDemo />
+
+The left one is a 16px control. The right one is a 44px control with a 16px mark inside it. On a desktop with a precise pointer, both are possible. On a phone, or with a thumb, or when you are moving quickly, the small one is a miss.
+
+I keep the icon at the size the layout wants. I do not grow it to make the target easier. A 16px icon in a toolbar is the right visual weight. The hit area is a separate decision, and it should be at least 44px on the short side. The extra space can be padding. It does not have to be visible.
+
+```css
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+}
+
+.icon-button svg {
+  width: 16px;
+  height: 16px;
+}
+```
+
+If the buttons sit in a row, the padding can overlap the gap between them. What matters is that the finger lands on a control, not on the space you left so the icons would look evenly spaced.
+
+The same rule applies to a text link in a list. The label can be one line. The row that receives the click should be the full width of the content, with padding above and below the words. People do not aim for the letterforms. They aim for the row.
+
+I check this by using the page the way it will be used. A thumb on a phone. A trackpad, not only a mouse. If I have to slow down to hit it, the target is too small, even when the icon looks correct.

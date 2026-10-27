@@ -1,0 +1,41 @@
+---
+title: The Default Is the Product
+date: 2026-10-26
+description: People keep the first version. Design it as if no setting exists.
+---
+
+Someone finds a component, pastes the example, and decides in about a minute. They almost never open the options. If the default is too slow, or the default style fights their page, that is the version they ship. A `duration` prop does not fix a bad first impression. It writes the mistake down.
+
+This is the version I want to copy:
+
+```tsx
+<Toaster />
+
+toast("Saved");
+```
+
+This is the version I close:
+
+```tsx
+<ToastProvider duration={4000} position="bottom-right" theme="system">
+  <ToastViewport />
+  {children}
+</ToastProvider>
+
+const { toast } = useToast();
+toast({ title: "Saved", duration: 4000 });
+```
+
+The second one can do more. The first one is the one people actually try. One place to mount it. One function to call. No provider they have to wrap around the tree before they can see anything. Friction at the start is a design bug.
+
+Timing, easing, stacking, how far something travels. Those belong to the person who built the component. I leave them alone unless a real product forces an exception. A prop for every one of them gives the component a second, worse personality.
+
+The page where you try it matters as much as the props. A screenshot of a toast is a claim. A button on that page, with the code beside it, is the component. I want to press it before I install anything.
+
+Naming is part of that first minute too. A name that sounds like the filename is easy to search and hard to remember. A name with a point of view is the opposite. I take that trade when I want people to ask for it by name.
+
+The work that makes the default feel finished is the work nobody puts on a landing page. Pause a timer when the tab is hidden. Keep the hover path intact when items move. Capture the pointer during a drag so leaving the element does not cancel it. Ignore a second finger so the position does not jump. None of these are features. Together they are why you leave it in the app.
+
+Motion has to fit the same personality. A playful surface can travel a little further and sit a little longer. A dense tool should be fast and almost dry. I pick one curve for the component and I do not offer five more in the props.
+
+I look at it again the next day, at full speed and slowed down. The version I liked at midnight is usually late by a few frames, or the exit is as slow as the enter. A new prop does not fix that.

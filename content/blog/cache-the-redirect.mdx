@@ -1,0 +1,19 @@
+---
+title: Cache the Redirect
+date: 2026-10-27T22:00:00.000Z
+description: On flarelinker, the short link is public and cached. The API that edits it is not.
+---
+
+[flarelinker](https://github.com/mxrtcendik/flarelinker) is a URL shortener that runs as a Cloudflare Worker. A request to `/{slug}` should do as little as possible. It looks up the link and redirects. Creating, editing, and deleting a link is a different request, and it should not be cheap or anonymous.
+
+The redirect is public. `GET /{slug}` does not require authentication. Neither do `GET /robots.txt` and `GET /api/health`. Everything under `/api/links` does. In production that check is a Cloudflare Access JWT. For local testing it is a bearer token. The split is the product: anyone can follow a short link, and only an authenticated caller can change the table.
+
+The redirect is also cached. Cloudflare's Cache API holds it for 60 seconds. A popular link should not read KV on every hit. Sixty seconds is long enough to absorb a burst and short enough that an edit or a deletion shows up without a manual purge. I would not cache the authenticated API. A list of links, or a slug check, has to be current for the person editing it. The public path can be slightly stale. The private path cannot.
+
+Expiration uses the same rule. A link can carry `expiresAt`. If the slug is missing or the date has passed, the worker redirects to the `NOT_FOUND` URL instead of returning a dead link. The root path redirects to `HOMEPAGE`. Both are configuration, not a special page inside the worker. The worker's job is the slug.
+
+A few limits keep a record small. The body of a write is capped at 10 KB. A slug is 2 to 64 characters, letters, numbers, underscores, and hyphens, and it is generated when the caller does not send one. Hit counts go to Analytics Engine as well as the record in KV. The redirect does not wait on that write to answer.
+
+The tests run in the Workers runtime with Vitest, not in an imitation of it. Redirects, cache behavior, auth, and the size limit are the paths worth covering. The type definitions for the worker are generated from `wrangler.jsonc` and are not edited by hand.
+
+The interesting part was not the short URL. It was deciding which requests are allowed to be fast and public, and which ones have to be exact.

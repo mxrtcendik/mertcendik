@@ -1,0 +1,29 @@
+---
+title: Keep a Response
+date: 2026-10-27T14:00:00.000Z
+description: When someone asks for less motion, the interface still has to answer.
+---
+
+Click it.
+
+<ResponseDemo />
+
+Nothing travels. The word changes, and the color changes. That is enough to know the action happened. Reduced motion is a request to remove movement that can make someone sick. It is not a request for a dead control.
+
+I take away transforms: the scale on press, the slide, the track that moves. I keep the things that explain state. A color change. A label that says "Copied" instead of "Copy link". A focus ring, which is not decoration. Opacity fades are usually fine, because they do not move the element through space.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: color 150ms ease;
+  }
+
+  .button:active {
+    transform: none;
+  }
+}
+```
+
+The mistake is a blanket that sets every transition to nearly zero and then ships it. Press feedback that depended on a scale disappears, and nothing replaces it. The person who asked for less motion gets less information.
+
+I decide per control. If the only confirmation was movement, I add a confirmation that is not movement before I turn the movement off. The interface should still feel like it heard you.

@@ -1,0 +1,35 @@
+---
+title: Clip the Change
+date: 2026-10-25
+description: One rectangle can reveal a fill, a tab, or a comparison.
+---
+
+Hold the button. Let go before it finishes, then hold it through.
+
+<HoldDemo />
+
+The color is already painted at full width. What changes is a clip. `inset(top right bottom left)` eats into the element from each edge. `inset(0 100% 0 0)` hides it from the right. `inset(0 0 0 0)` shows it. The values are percentages of the element, so the same rule works on a button, a photo, or a panel without measuring pixels.
+
+While the button is pressed, the clip opens over about two seconds on a linear timing. The fill is honest progress. If you let go early, it closes in 200ms with ease-out. The button scales to `0.97` for the press. The fill and the scale are separate. One is the decision. The other is the feedback.
+
+```css
+.confirm-fill {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.button:active .confirm-fill {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 2s linear;
+}
+```
+
+Opacity would fade the whole surface at once. The clip has a direction, so you can see where the new state is coming from.
+
+The same trick makes a tab indicator that can change the text color cleanly. Render the tab row twice. Style the top copy as the active state, a different background and a different text color, and clip it so only the active tab shows through. When the selection moves, animate the clip. Transitioning `color` on each label never lines up. You see the old color and the new color as two steps. The clip is one shape moving across a row that is already fully painted.
+
+A before-and-after on a photograph is the same property. Stack the two images. Clip the top one with `inset(0 50% 0 0)` and set that right edge from the drag. No extra mask element. The clip stays on the compositor, which matters once the images are large.
+
+I animate `clip-path`, `transform`, and `opacity`, and I leave `width` alone. Growing a bar by animating its width forces layout on every frame. Clipping a bar that is already full width does not.
+
+`transform-origin` does not apply here. The inset values are the origin. If the reveal comes from the wrong side, the inset is wrong, not the curve.

@@ -1,0 +1,43 @@
+---
+title: The Press Is the Animation
+date: 2026-10-23
+description: The control should shrink under the pointer before anything else happens.
+---
+
+Press the button.
+
+<PressDemo />
+
+That scale is the whole animation. It goes to `0.97` over 160ms. The label shrinks with the button, because `scale()` scales the children too. A physical button does the same thing. The word does not stay full size while the chrome caves in.
+
+`0.95` is as far as I take it. Past that, the control looks like it is dodging the cursor. `0.97` is enough to feel, and small enough that a fast click does not bounce.
+
+```css
+.button {
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+```
+
+The curve has to move on the first frames. `ease-in` holds still at the start, which is the moment the person is watching. Ease-out moves, then settles. The built-in `ease-out` is a little soft here. `cubic-bezier(0.23, 1, 0.32, 1)` gets there sooner.
+
+Name `transform` and nothing else. `transition: all` will also drag color, shadow, and whatever else changes on hover along for the same 160ms.
+
+Hover is a separate question, and it has to be gated. A touch screen fires hover on tap, so a hover scale sticks after the finger leaves.
+
+```css
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    background: var(--hover);
+  }
+}
+```
+
+A color change on hover can use a plain `ease` around 150ms. I do not lift the button or grow a shadow. That reads as decoration on something people press all day.
+
+If the label also changes, from "Copy" to "Copied", I crossfade the text. When the two labels sit on top of each other and look like a double exposure, a blur of about 2px during the swap blends them into one change. Keep it small. A large blur gets expensive, especially in Safari.
+
+Reduced motion keeps the color and drops the scale. The press still needs a visible answer. It does not need to travel. The scale and the label are doing different jobs. One says the click landed. The other says the state changed.

@@ -1,0 +1,23 @@
+---
+title: Should This Animate?
+date: 2026-10-22
+description: Count how often someone will see it before you pick a curve.
+---
+
+A menu I open with a keystroke should already be there. A dialog I open a few times a day can take a moment to arrive. Those are different problems, and the curve is not what separates them.
+
+I start with a count. How many times today will someone watch this move?
+
+Hundreds of times, from the keyboard: no animation. A command menu, a shortcut, a toggle you hit without looking. The motion sits between the key and the result. [Raycast](https://raycast.com) opens with no transition. That is the right call for a tool you live in.
+
+Dozens of times, in passing: almost nothing. A hovered row can change color in about 150ms. It should not slide, fade up, or wait for its siblings. On the tenth visit that stagger is no longer craft. It is lag.
+
+A few times in a session: this is where motion earns its place. A dialog, a drawer, a toast. The movement tells you where the surface came from, which is also where it will go back. A drawer that rises from the bottom can be swiped back down. A toast that enters from the corner it can be dismissed toward teaches the gesture before anyone tries it.
+
+Once, or almost once: a first success, a celebration, an empty state. That is the budget for something slower. Spend it there.
+
+Take a settings page. The theme control is hit constantly, so the icon swaps and the page does not perform a transition. The "delete account" dialog is rare, so it can fade and scale in from `0.95`, not from `0`. `scale(0)` looks like the dialog came from nowhere. A slight scale, with opacity, looks like it was already a thing.
+
+If I cannot say why something moves, I leave it still. Feedback, a hint about where it came from, a bridge so a change does not pop, or an explanation on a page whose job is to explain. "It looks cool" is not one of those, not on a surface people use.
+
+A page of writing fails the test on the way in. The reader came for the words. Starting them at opacity 0 makes the first frame blank. The page can just be there.
