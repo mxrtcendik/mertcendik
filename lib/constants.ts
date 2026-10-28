@@ -11,6 +11,12 @@ export const personalInfo: PersonalInfo = {
 
 export const projects: Project[] = [
   {
+    name: "hourlink",
+    description:
+      "A meeting time, as a link. No account. Whoever opens it sees that moment in their own timezone.",
+    url: "https://github.com/mxrtcendik/hourlink",
+  },
+  {
     name: "flarelinker",
     description:
       "A minimal, production-ready URL shortener built as a Cloudflare Worker. Open-source and free to use.",
