@@ -17,7 +17,7 @@
     "url": "https://github.com/mxrtcendik/mertcendik"
   },
   "scripts": {
-    "build": "next build",
+    "build": "node scripts/write-og-posts.cjs && next build",
     "dev": "next dev",
     "start": "next start",
     "lint": "eslint",
