@@ -1,6 +1,5 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
 import { ImageResponse } from "next/og";
+import { ogFontBase64 } from "@/lib/og-font";
 
 export const ogSize = {
   width: 1200,
@@ -13,15 +12,15 @@ const background = "#0a0a0a";
 const foreground = "#fafafa";
 const muted = "#a3a3a3";
 
-async function loadOgFont() {
-  const file = await readFile(
-    path.join(process.cwd(), "assets/fonts/Inter-SemiBold.woff"),
-  );
+function loadOgFont() {
+  const binary = atob(ogFontBase64);
+  const bytes = new Uint8Array(binary.length);
 
-  return file.buffer.slice(
-    file.byteOffset,
-    file.byteOffset + file.byteLength,
-  ) as ArrayBuffer;
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+
+  return bytes.buffer;
 }
 
 export async function renderOgImage({
@@ -31,7 +30,7 @@ export async function renderOgImage({
   title: string;
   detail?: string;
 }) {
-  const font = await loadOgFont();
+  const font = loadOgFont();
 
   return new ImageResponse(
     <div

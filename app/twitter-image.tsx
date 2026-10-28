@@ -1,57 +1,13 @@
-import { ImageResponse } from "next/og";
+import { personalInfo } from "@/lib/constants";
+import { ogContentType, ogSize, renderOgImage } from "@/lib/og";
 
-export const alt = "Mert Cendik";
-export const size = {
-  width: 1200,
-  height: 630,
-};
+export const alt = `${personalInfo.name}, ${personalInfo.title}`;
+export const size = ogSize;
+export const contentType = ogContentType;
 
-export const contentType = "image/png";
-
-export default async function Image() {
-  const interSemiBold = await fetch(
-    "https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-600-normal.woff"
-  ).then((res) => {
-    if (!res.ok) throw new Error("Failed to fetch font");
-    return res.arrayBuffer();
+export default function Image() {
+  return renderOgImage({
+    title: personalInfo.name,
+    detail: personalInfo.title,
   });
-
-  return new ImageResponse(
-    <div
-      style={{
-        background:
-          "linear-gradient(150deg, #FFD1FF 0%, #FAD0C4 30%, #D4D3FF 65%, #C2E9FB 100%)",
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "flex-start",
-        padding: "80px",
-      }}
-    >
-      <div
-        style={{
-          fontSize: 100,
-          fontWeight: 600,
-          color: "black",
-          fontFamily: "Inter",
-          letterSpacing: "-0.06em",
-          lineHeight: 1,
-        }}
-      >
-        Mert Cendik
-      </div>
-    </div>,
-    {
-      ...size,
-      fonts: [
-        {
-          name: "Inter",
-          data: interSemiBold,
-          style: "normal",
-          weight: 600,
-        },
-      ],
-    }
-  );
 }

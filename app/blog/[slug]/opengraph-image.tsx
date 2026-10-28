@@ -32,6 +32,6 @@ export default async function Image({
 
   return renderOgImage({
     title,
-    detail: date ? `${personalInfo.name} · ${date}` : personalInfo.name,
+    detail: date ? `${personalInfo.name} - ${date}` : personalInfo.name,
   });
 }

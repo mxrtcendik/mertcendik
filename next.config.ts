@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  outputFileTracingIncludes: {
+    "/blog/[slug]/opengraph-image": ["./content/blog/**/*"],
+    "/blog/[slug]/opengraph-image/[__metadata_id__]": ["./content/blog/**/*"],
+  },
 };
 
 export default nextConfig;
