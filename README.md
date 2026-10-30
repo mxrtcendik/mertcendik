@@ -1,6 +1,6 @@
 # mertcendik
 
-Personal site for Mert Cendik, a design engineer. Built with Next.js, TypeScript, and MDX. Live at [cendik.dev](https://cendik.dev).
+My personal website. Built with Next.js, TypeScript, and MDX. Live at [cendik.dev](https://cendik.dev).
 
 ## Features
 
