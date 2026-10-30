@@ -1,4 +1,8 @@
 export const ogPosts: Record<string, { title: string; date: string }> = {
+  "a-click-does-nothing": {
+    "title": "A Click Does Nothing",
+    "date": "2026-10-30T19:30:00.000Z"
+  },
   "bigger-than-the-icon": {
     "title": "Bigger Than the Icon",
     "date": "2026-10-27T08:00:00.000Z"
@@ -26,6 +30,10 @@ export const ogPosts: Record<string, { title: string; date: string }> = {
   "the-first-frames": {
     "title": "Watch the First Frames",
     "date": "2026-10-24T00:00:00.000Z"
+  },
+  "the-link-is-the-time": {
+    "title": "The Link Is the Time",
+    "date": "2026-10-30T18:00:00.000Z"
   },
   "the-other-theme": {
     "title": "Check the Other Theme",

@@ -1,0 +1,25 @@
+---
+title: A Click Does Nothing
+date: 2026-10-30T19:30:00.000Z
+description: The action runs after the hold. A click is not a shorter hold.
+---
+
+Hold it through. A click leaves it alone.
+
+<ConfirmDemo />
+
+[onpurpose](https://onpurpose.cendik.dev) is a hold-to-confirm button for the actions you do not want on a misclick. Delete, publish, revoke, send. The action runs after you have held it for 1.5 seconds. Letting go early does nothing. A click does nothing.
+
+A button's usual job is the click. A screen reader activates one with a click. It does not hold a pointer down for a second and a half, and this button does not treat that click as a confirm. A double-tap cannot delete anything. Space and Enter confirm only when the key is actually held.
+
+A short press still clicks, and that click still bubbles. Put the button at the end of the row it will destroy. The row can open the project on a click. A finished hold does not also click, so removing the project does not open it on the way out. Drag off the control and the hold cancels. Coming back onto it does not resume, and releasing outside never confirms.
+
+The 1.5 seconds is not a prop. The fill crosses the button in that same time, so the distance left is the time left. Let go and the fill eases back in 200ms. While the pointer is down the button scales to `0.97`. Reduced motion drops the scale, and an early release snaps back. The fill still moves. Without it, a hold and a click look the same, and the person who asked for less motion loses the only sign that the hold is working.
+
+```tsx
+import { HoldButton } from "onpurpose";
+
+<HoldButton onConfirm={() => deleteProject()}>Hold to delete</HoldButton>
+```
+
+There is no provider and no stylesheet to import. It takes the font and the color of the page it is on. `onConfirm` runs once, at the end, and it returns right away. If the work is a request, the button is idle again while that request is still going. Disable it until the request finishes, or someone can hold it a second time.

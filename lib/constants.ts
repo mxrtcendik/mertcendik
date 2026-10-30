@@ -11,6 +11,12 @@ export const personalInfo: PersonalInfo = {
 
 export const projects: Project[] = [
   {
+    name: "onpurpose",
+    description:
+      "A hold-to-confirm button for React. The action runs after you hold it. A click does nothing.",
+    url: "https://github.com/mxrtcendik/onpurpose",
+  },
+  {
     name: "hourlink",
     description:
       "A meeting time, as a link. No account. Whoever opens it sees that moment in their own timezone.",

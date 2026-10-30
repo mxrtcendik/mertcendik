@@ -2,7 +2,7 @@ import { BackToTop } from "@/components/back-to-top";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { mdxImageComponents } from "@/components/mdx-components";
 import { PostNavigation } from "@/components/post-navigation";
-import { EasingDemo, HoldDemo, PressDemo, HitDemo, ResponseDemo, ContrastDemo } from "@/components/post-demos";
+import { EasingDemo, HoldDemo, PressDemo, HitDemo, ResponseDemo, ContrastDemo, ConfirmDemo } from "@/components/post-demos";
 import { SharePost } from "@/components/share-post";
 import { Video } from "@/components/video";
 import { YouTube } from "@/components/youtube";
@@ -76,6 +76,7 @@ const mdxComponents = {
   HitDemo,
   ResponseDemo,
   ContrastDemo,
+  ConfirmDemo,
   ...mdxImageComponents,
 };
 

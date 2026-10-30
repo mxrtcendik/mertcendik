@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const easeOut = "cubic-bezier(0.23, 1, 0.32, 1)";
 
@@ -99,6 +99,148 @@ export function HoldDemo() {
         .hold-demo:active .hold-demo-fill {
           clip-path: inset(0 0 0 0);
           transition: clip-path 2s linear;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+export function ConfirmDemo() {
+  const [phase, setPhaseState] = useState<"idle" | "holding" | "confirmed">(
+    "idle",
+  );
+  const [pressed, setPressed] = useState(false);
+  const [result, setResult] = useState("A click does nothing.");
+  const phaseRef = useRef(phase);
+  const abortedRef = useRef(false);
+  const timers = useRef<number[]>([]);
+
+  function setPhase(next: "idle" | "holding" | "confirmed") {
+    phaseRef.current = next;
+    setPhaseState(next);
+  }
+
+  function clearTimers() {
+    for (const id of timers.current) window.clearTimeout(id);
+    timers.current = [];
+  }
+
+  function later(fn: () => void, ms: number) {
+    const id = window.setTimeout(fn, ms);
+    timers.current.push(id);
+  }
+
+  useEffect(() => clearTimers, []);
+
+  function idle() {
+    abortedRef.current = false;
+    setPressed(false);
+    setPhase("idle");
+    setResult("A click does nothing.");
+  }
+
+  return (
+    <div className="my-6">
+      <button
+        type="button"
+        className="confirm-demo"
+        data-state={phase}
+        data-pressed={pressed ? "true" : "false"}
+        onPointerDown={(event) => {
+          if (!event.isPrimary || event.button !== 0) return;
+          clearTimers();
+          abortedRef.current = false;
+          event.currentTarget.setPointerCapture(event.pointerId);
+          setPressed(true);
+          setPhase("holding");
+          setResult("Hold it through.");
+          later(() => {
+            if (abortedRef.current || phaseRef.current !== "holding") return;
+            setPhase("confirmed");
+            setResult("Deleted.");
+          }, 1500);
+        }}
+        onPointerMove={(event) => {
+          if (phaseRef.current !== "holding" || abortedRef.current) return;
+          const rect = event.currentTarget.getBoundingClientRect();
+          const outside =
+            event.clientX < rect.left ||
+            event.clientX > rect.right ||
+            event.clientY < rect.top ||
+            event.clientY > rect.bottom;
+          if (!outside) return;
+          abortedRef.current = true;
+          clearTimers();
+          setPressed(false);
+          setPhase("idle");
+          setResult("A click does nothing.");
+        }}
+        onPointerUp={() => {
+          if (abortedRef.current) {
+            setPressed(false);
+            abortedRef.current = false;
+            return;
+          }
+          if (phaseRef.current === "confirmed") {
+            setPressed(false);
+            later(idle, 900);
+            return;
+          }
+          clearTimers();
+          idle();
+        }}
+        onPointerCancel={() => {
+          clearTimers();
+          idle();
+        }}
+        onClick={(event) => {
+          if (phaseRef.current !== "confirmed") event.preventDefault();
+        }}
+      >
+        <span className="confirm-demo-fill" aria-hidden="true" />
+        <span className="relative">
+          {phase === "confirmed" ? "Deleted" : "Hold to delete"}
+        </span>
+      </button>
+      <p className="text-muted-foreground mt-3 text-sm" aria-live="polite">
+        {result}
+      </p>
+      <style>{`
+        .confirm-demo {
+          position: relative;
+          overflow: hidden;
+          border: 1px solid var(--border);
+          border-radius: 0.375rem;
+          padding: 0.375rem 0.75rem;
+          font-size: 0.875rem;
+          line-height: 1.25rem;
+          transition: transform 160ms ${easeOut};
+        }
+        .confirm-demo-fill {
+          position: absolute;
+          inset: 0;
+          background: color-mix(in oklch, var(--foreground) 12%, transparent);
+          clip-path: inset(0 100% 0 0);
+          transition: clip-path 200ms ${easeOut};
+        }
+        .confirm-demo[data-pressed="true"] {
+          transform: scale(0.97);
+        }
+        .confirm-demo[data-state="holding"] .confirm-demo-fill,
+        .confirm-demo[data-state="confirmed"] .confirm-demo-fill {
+          clip-path: inset(0 0 0 0);
+          transition: clip-path 1.5s linear;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .confirm-demo {
+            transition: none;
+          }
+          .confirm-demo[data-pressed="true"] {
+            transform: none;
+          }
+          .confirm-demo[data-state="idle"] .confirm-demo-fill {
+            transition: none;
+          }
         }
       `}</style>
     </div>
