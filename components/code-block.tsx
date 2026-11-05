@@ -40,7 +40,6 @@ const languageNames: Record<string, string> = {
   sh: "Shell",
 };
 
-// rehype-highlight puts the language on the <code> inside, as "language-css".
 function getLanguage(node: React.ReactNode): string | null {
   if (!node || typeof node !== "object" || !("props" in node)) return null;
   const className = (node as { props?: { className?: string } }).props
@@ -71,8 +70,6 @@ export function CodeBlock({ children, className }: CodeBlockProps) {
 
   const language = getLanguage(children);
 
-  // The label and copy button get their own row above the code. Floating over
-  // it, they covered long lines on narrow screens.
   return (
     <div className="bg-muted my-4 rounded-lg">
       <div className="flex items-center justify-between py-1 pr-1.5 pl-4">

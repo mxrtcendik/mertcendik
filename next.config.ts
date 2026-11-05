@@ -1,6 +1,5 @@
 import type { NextConfig } from "next";
 
-// Old post slugs, kept so links shared before the rename still work.
 const renamedPosts: Record<string, string> = {
   "a-click-does-nothing": "a-button-you-have-to-hold",
   "bigger-than-the-icon": "make-the-target-bigger",
@@ -18,9 +17,6 @@ const isDev = process.env.NODE_ENV === "development";
 const analytics =
   Boolean(process.env.NEXT_PUBLIC_CF_WEB_ANALYTICS_TOKEN) && !isDev;
 
-// Inline scripts are allowed because Next.js and the theme script use them.
-// Everything else is limited to this site, plus YouTube embeds and Cloudflare
-// Web Analytics when it's turned on.
 const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${analytics ? " https://static.cloudflareinsights.com" : ""}${isDev ? " 'unsafe-eval'" : ""}`,

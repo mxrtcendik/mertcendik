@@ -60,8 +60,6 @@ export function ProjectList({ projects }: { projects: Project[] }) {
           )}
         >
           <div className="flex items-center justify-between gap-4">
-            {/* The ::after stretches this link over the whole card. Projects
-                with a page open it here; the rest open their site or repo. */}
             <PostLink
               data-card
               href={
@@ -88,7 +86,6 @@ export function ProjectList({ projects }: { projects: Project[] }) {
             </PostLink>
             <div className="flex items-center gap-3">
               {project.site && (
-                // Shown on hover where there is one, always on touch screens.
                 <a
                   href={project.url}
                   target="_blank"

@@ -151,7 +151,6 @@ export default async function BlogPost({
                 </div>
               )}
               <SharePost />
-              {/* Last, since it appears after loading and would push the rest. */}
               <ViewCount slug={slug} />
             </div>
           </div>

@@ -1,7 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// Browser tests for the site. They start the dev server if it isn't running,
-// or reuse it if it is. Run with: npm run test:e2e
 export default defineConfig({
   testDir: "e2e",
   fullyParallel: true,
@@ -14,7 +12,6 @@ export default defineConfig({
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     {
-      // The accessibility checks again in dark mode, since colors differ.
       name: "desktop-dark",
       use: { ...devices["Desktop Chrome"], colorScheme: "dark" },
       grep: /passes axe/,
@@ -22,7 +19,6 @@ export default defineConfig({
     {
       name: "phone",
       use: { ...devices["Pixel 7"] },
-      // Phone runs only the layout checks; behavior is covered on desktop.
       grep: /@phone/,
     },
   ],

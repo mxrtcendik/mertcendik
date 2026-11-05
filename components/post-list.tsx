@@ -22,8 +22,6 @@ export function PostList({
           )}
         >
           <div className="space-y-1">
-            {/* A long title wraps and the date stays on the right, so every
-                row has the same shape. */}
             <div className="flex items-baseline justify-between gap-4">
               <PostTitleTransition slug={post.slug}>
                 <div className="min-w-0 text-base font-medium">

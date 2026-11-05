@@ -12,7 +12,6 @@ export const metadata: Metadata = {
   description: `Posts by ${personalInfo.name} about interface design, motion, and the things I build.`,
 };
 
-// Posts arrive newest first, so the months come out in order too.
 function groupByMonth(posts: BlogPost[]) {
   const groups = new Map<string, BlogPost[]>();
   for (const post of posts) {

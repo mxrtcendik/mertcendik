@@ -28,18 +28,14 @@ import { useEffect, useId, useRef, useState, type RefObject } from "react";
 type Item = {
   value: string;
   label: string;
-  // Extra text the search matches, like a post's description.
   keywords?: string;
   hint?: string;
   icon: Icon;
   action: Action;
 };
 
-// What happens when an item is picked. Items are plain data, and the menu
-// runs the action, so searching never has to touch any of the handlers.
 type Action =
   | { type: "page"; href: string }
-  // A post or project page, opened at the top of the page.
   | { type: "article"; href: string }
   | { type: "external"; url: string }
   | { type: "theme" }
@@ -57,10 +53,6 @@ const posts = Object.entries(ogPosts)
   .map(([slug, post]) => ({ slug, ...post }))
   .sort((a, b) => (b.date > a.date ? 1 : -1));
 
-// Every word typed has to appear somewhere in the label or keywords, so
-// "clip tab" finds the clip-path post even though the words aren't adjacent.
-// Matches in the label count for more, so typing "dark" puts the theme action
-// above a post that only mentions dark in its description. 0 means no match.
 function score(item: Item, query: string) {
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   if (words.length === 0) return 1;
@@ -74,8 +66,6 @@ function score(item: Item, query: string) {
   return 1;
 }
 
-// Filters each group, sorts its items by score, and moves the group with the
-// best match to the top. Groups keep their order when the scores tie.
 function rank(groups: Group[], query: string): Group[] {
   return groups
     .map((group) => {
@@ -179,9 +169,6 @@ function buildGroups(isDark: boolean, copied: boolean): Group[] {
   ];
 }
 
-// The search dialog itself. It's loaded separately from the search button
-// (see command-menu.tsx), so its code stays off the critical path until the
-// page is idle or someone reaches for search.
 export default function CommandMenuDialog({
   open,
   onOpenChange: setOpen,
@@ -192,7 +179,6 @@ export default function CommandMenuDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
   returnFocusTo: RefObject<HTMLButtonElement | null>;
-  // Anything typed while this component was still loading.
   initialQuery: string;
   onReady: () => void;
 }) {
@@ -226,7 +212,6 @@ export default function CommandMenuDialog({
       navigator.clipboard
         .writeText(personalInfo.email)
         .then(() => {
-          // Stay open for a moment so the "Copied" is actually seen.
           setCopied(true);
           closeTimer.current = setTimeout(() => onOpenChange(false), 700);
         })
@@ -254,8 +239,6 @@ export default function CommandMenuDialog({
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        {/* No enter or exit animation: this opens from the keyboard, often
-            many times a day, and should feel instant. */}
         <Dialog.Backdrop className="fixed inset-0 bg-black/20 dark:bg-black/60" />
         <Dialog.Viewport className="fixed inset-0 flex items-start justify-center px-4 pt-[12vh]">
           <Dialog.Popup

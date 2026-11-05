@@ -4,9 +4,6 @@ import { cn } from "@/lib/utils";
 import { CheckCircleIcon, LinkIcon } from "@phosphor-icons/react/ssr";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-// Both states stay rendered on top of each other, and CSS crossfades between
-// them: the old one leaves upward while the new one arrives from below.
-// Reduced motion keeps the fade and drops the slide.
 function Swap({
   copied,
   idle,

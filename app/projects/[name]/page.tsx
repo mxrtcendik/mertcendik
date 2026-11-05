@@ -24,8 +24,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import rehypeHighlight from "rehype-highlight";
 
-// Screenshots live in public/projects as <name>-light.png and <name>-dark.png.
-// onpurpose has none: its page opens with the real, working button instead.
 const screenshots: Record<
   string,
   { alt: string; width: number; height: number }
@@ -154,8 +152,6 @@ export default async function ProjectPage({
           </div>
 
           {shot && (
-            // Two images, so the screenshot follows the site's theme toggle,
-            // not just the system setting.
             <div className="border-border overflow-hidden rounded-xl border">
               {(["light", "dark"] as const).map((theme) => (
                 <Image

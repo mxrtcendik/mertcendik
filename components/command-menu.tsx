@@ -10,10 +10,6 @@ import {
   useSyncExternalStore,
 } from "react";
 
-// The dialog and its search library are the heaviest code on the page, and
-// nobody needs them until they open search. They load as soon as the pointer
-// or keyboard focus reaches the button, or when Cmd/Ctrl+K is pressed. Anything
-// typed while they load is kept (see "pending" below).
 const loadDialog = () => import("@/components/command-menu-dialog");
 const CommandMenuDialog = dynamic(loadDialog, { ssr: false });
 
@@ -21,8 +17,6 @@ function subscribeNothing() {
   return () => {};
 }
 
-// Shows ⌘K on Apple devices and Ctrl K everywhere else. Renders nothing on
-// the server, since the platform isn't known there.
 function useShortcutLabel() {
   return useSyncExternalStore(
     subscribeNothing,
@@ -33,12 +27,9 @@ function useShortcutLabel() {
 
 export function CommandMenu() {
   const [open, setOpen] = useState(false);
-  // Only mount the dialog once it's been opened, so it never renders early.
   const [used, setUsed] = useState(false);
   const button = useRef<HTMLButtonElement>(null);
   const shortcut = useShortcutLabel();
-  // If search opens before the dialog has loaded, keep what's typed and hand
-  // it over as the starting query, so no keystrokes are lost.
   const [pending, setPending] = useState("");
   const state = useRef({ open: false, ready: false });
   const onReady = useCallback(() => {
@@ -96,8 +87,6 @@ export function CommandMenu() {
         aria-expanded={open}
         className="text-muted-foreground hover:text-foreground focus-visible:ring-ring -my-2.5 flex h-11 cursor-pointer items-center gap-2 rounded-md px-2.5 transition-[color,scale] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:ring-1 focus-visible:outline-none active:scale-[0.97] motion-reduce:active:scale-100"
       >
-        {/* The name comes from the content: "Search", plus the shortcut where
-            it's shown, so what people see is part of what they can say. */}
         <MagnifyingGlassIcon aria-hidden className="size-5" />
         <span className="sr-only">Search</span>
         {shortcut && (

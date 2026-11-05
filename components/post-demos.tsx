@@ -255,7 +255,6 @@ export function HitDemo() {
           <div className="text-muted-foreground mb-2 text-center text-sm">
             16px
           </div>
-          {/* Same 44px row as the other one, so the two icons line up. */}
           <div className="flex size-11 items-center justify-center">
             <button
               type="button"
@@ -290,7 +289,6 @@ export function ResponseDemo() {
         type="button"
         onClick={() => {
           setCopied(true);
-          // Reset so the demo can be tried again.
           setTimeout(() => setCopied(false), 2000);
         }}
         className={

@@ -1,9 +1,6 @@
 import { ogPosts } from "@/lib/og-posts";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
-// View counts for posts, stored in D1 (see migrations/0001_views.sql).
-// GET reads a count, POST adds one view and returns the new count.
-
 const headers = { "Cache-Control": "no-store" };
 
 async function database() {
@@ -11,7 +8,6 @@ async function database() {
   return env.VIEWS_DB;
 }
 
-// Only real posts get a row, so nobody can fill the table with made-up slugs.
 function isPost(slug: string) {
   return Object.hasOwn(ogPosts, slug);
 }
@@ -41,7 +37,6 @@ export async function POST(
   if (!isPost(slug))
     return Response.json({ error: "Not found" }, { status: 404 });
 
-  // One statement, so two visits at the same moment both count.
   const db = await database();
   const row = await db
     .prepare(

@@ -19,7 +19,6 @@ const pages = [
   ...projectPages,
 ];
 
-// Collects console errors and uncaught exceptions while a test runs.
 function watchErrors(page: Page) {
   const errors: string[] = [];
   page.on("console", (message) => {
@@ -95,8 +94,6 @@ test.describe("search", () => {
   test("keeps what's typed while the dialog is still loading", async ({
     page,
   }) => {
-    // Delay every script requested after the page loads, which includes
-    // the search dialog.
     let loaded = false;
     await page.route(/\.js(\?|$)/, async (route) => {
       if (loaded) await new Promise((resolve) => setTimeout(resolve, 1500));

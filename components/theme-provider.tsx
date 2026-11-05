@@ -24,7 +24,6 @@ const ThemeContext = createContext<ThemeContextValue>({
 
 const darkQuery = "(prefers-color-scheme: dark)";
 
-// Used when localStorage is unavailable, so the toggle still works for this visit.
 let fallbackTheme: Theme = "system";
 const listeners = new Set<() => void>();
 

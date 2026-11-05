@@ -13,23 +13,18 @@
 	},
 	"services": [
 		{
-			// Self-reference service binding, the service name must match the worker name
-			// see https://opennext.js.org/cloudflare/caching
 			"binding": "WORKER_SELF_REFERENCE",
 			"service": "mertcendik"
 		}
 	],
 	"r2_buckets": [
 		{
-			// R2 incremental cache for OpenNext
-			// Create this bucket with: npx wrangler r2 bucket create mertcendik-next-cache
 			"binding": "NEXT_INC_CACHE_R2_BUCKET",
 			"bucket_name": "mertcendik-next-cache"
 		}
 	],
 	"d1_databases": [
 		{
-			// Post view counts. The table is created by migrations/0001_views.sql.
 			"binding": "VIEWS_DB",
 			"database_name": "mertcendik-views",
 			"database_id": "d1008db5-bb4a-4811-a506-e9bf7872f142",
@@ -37,8 +32,6 @@
 		}
 	],
 	"images": {
-		// Enable image optimization
-		// see https://opennext.js.org/cloudflare/howtos/image
 		"binding": "IMAGES"
 	}
 }

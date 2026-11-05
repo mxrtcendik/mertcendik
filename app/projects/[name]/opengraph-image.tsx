@@ -5,7 +5,6 @@ export const size = ogSize;
 export const contentType = ogContentType;
 export const alt = personalInfo.name;
 
-// Uses only lib/constants.ts, so it works without reading files at runtime.
 export default async function Image({
   params,
 }: {

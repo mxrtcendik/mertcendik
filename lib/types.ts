@@ -11,7 +11,6 @@ export interface Project {
   description: string;
   url: string;
   site?: string;
-  // True when content/projects/<name>.mdx exists, so the card opens /projects/<name>.
   page?: boolean;
   stars?: number | null;
 }

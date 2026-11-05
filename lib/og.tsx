@@ -26,8 +26,6 @@ function loadOgFont() {
 
 const border = "#262626";
 
-// Each word is its own box, so the title only wraps between words. Without
-// this, "clip-path" breaks after the hyphen.
 function Words({ text }: { text: string }) {
   return (
     <div style={{ display: "flex", flexWrap: "wrap", columnGap: "0.25em" }}>
@@ -45,7 +43,6 @@ export async function renderOgImage({
 }: {
   title: string;
   description?: string;
-  // Shown at the bottom left, like a post's date.
   meta?: string;
 }) {
   const font = loadOgFont();

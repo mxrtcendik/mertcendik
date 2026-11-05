@@ -152,13 +152,9 @@
     padding: 1em;
   }
 
-  /* The panel the interactive demos in posts sit on. The dot grid marks it
-     as something to try, not part of the text. */
   .demo-stage {
     margin-block: 2rem;
     display: flex;
-    /* Stacked, so a demo's status text sits under its button. Demos with
-       items side by side add their own row. */
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -176,7 +172,6 @@
     background-position: center;
   }
 
-  /* For demos with full-width rows, like the easing tracks. */
   .demo-stage-wide {
     display: block;
     text-align: left;
@@ -186,13 +181,10 @@
     margin-top: 1rem;
   }
 
-  /* The contrast demo compares grays with the page, so no pattern behind it. */
   .demo-stage-plain {
     background-image: none;
   }
 
-  /* Text stops at about 70 characters a line, which is easier to read.
-     Code blocks and demos can still use the full width of the page. */
   .prose :where(p, ul, ol, blockquote) {
     max-width: 34rem;
   }
@@ -230,9 +222,6 @@
   }
 }
 
-/* GitHub's light theme was made for white. On the gray code background a few
-   of its colors fall under the 4.5:1 contrast minimum, so these are the same
-   hues, darkened just enough to pass. */
 :root:not(.dark)
   :is(
     .hljs-doctag,
@@ -371,10 +360,7 @@
   color: rgb(255, 255, 255);
 }
 
-/* Page transitions. Navigating between pages is something people do a few
-   times per visit, so it gets a short fade, not a slide. */
 ::view-transition {
-  /* Let clicks reach the new page while the animation is still running. */
   pointer-events: none;
 }
 
@@ -386,8 +372,6 @@
   animation: 220ms cubic-bezier(0.23, 1, 0.32, 1) 60ms both vt-fade-in;
 }
 
-/* A post title moving from a list into the post heading. It's already on
-   screen, so it uses ease-in-out, with a small blur to hide the scaling. */
 ::view-transition-group(.morph) {
   animation-duration: 320ms;
   animation-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
@@ -416,7 +400,6 @@
   }
 }
 
-/* Reduced motion keeps the fade and drops anything that moves. */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*) {
     animation-duration: 0s !important;
