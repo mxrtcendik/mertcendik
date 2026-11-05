@@ -4,9 +4,7 @@ import { ogPosts } from "@/lib/og-posts";
 import { ogContentType, ogSize, renderOgImage } from "@/lib/og";
 import { formatDate } from "@/lib/utils";
 
-async function readSlug(
-  params: { slug: string } | Promise<{ slug: string }>,
-) {
+async function readSlug(params: { slug: string } | Promise<{ slug: string }>) {
   const value = await params;
   return value.slug;
 }
@@ -18,7 +16,11 @@ function postFor(slug: string) {
   const post = getBlogPost(slug);
   if (!post) return null;
 
-  return { title: post.title, date: post.date };
+  return {
+    title: post.title,
+    date: post.date,
+    description: post.description,
+  };
 }
 
 export async function generateImageMetadata({
@@ -51,6 +53,7 @@ export default async function Image({
 
   return renderOgImage({
     title,
-    detail: date ? `${personalInfo.name} - ${date}` : personalInfo.name,
+    description: post?.description,
+    meta: date,
   });
 }

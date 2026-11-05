@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { personalInfo } from "@/lib/constants";
 import { ogFontBase64 } from "@/lib/og-font";
 
 export const ogSize = {
@@ -23,12 +24,29 @@ function loadOgFont() {
   return bytes.buffer;
 }
 
+const border = "#262626";
+
+// Each word is its own box, so the title only wraps between words. Without
+// this, "clip-path" breaks after the hyphen.
+function Words({ text }: { text: string }) {
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", columnGap: "0.25em" }}>
+      {text.split(/\s+/).map((word, index) => (
+        <span key={index}>{word}</span>
+      ))}
+    </div>
+  );
+}
+
 export async function renderOgImage({
   title,
-  detail,
+  description,
+  meta,
 }: {
   title: string;
-  detail?: string;
+  description?: string;
+  // Shown at the bottom left, like a post's date.
+  meta?: string;
 }) {
   const font = loadOgFont();
 
@@ -40,38 +58,58 @@ export async function renderOgImage({
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "flex-end",
-        padding: "80px",
+        justifyContent: "space-between",
+        padding: "72px 80px",
         fontFamily: "Inter",
+        letterSpacing: "-0.02em",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          fontSize: title.length > 42 ? 64 : 80,
-          fontWeight: 600,
-          color: foreground,
-          letterSpacing: "-0.04em",
-          lineHeight: 1.05,
-          maxWidth: 1000,
-        }}
-      >
-        {title}
+      <div style={{ display: "flex", gap: 14, fontSize: 28 }}>
+        <span style={{ color: foreground }}>{personalInfo.name}</span>
+        <span style={{ color: muted }}>{personalInfo.title}</span>
       </div>
-      {detail ? (
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         <div
           style={{
             display: "flex",
-            marginTop: 28,
-            fontSize: 32,
-            fontWeight: 600,
-            color: muted,
-            letterSpacing: "-0.02em",
+            fontSize: title.length > 60 ? 56 : title.length > 36 ? 64 : 76,
+            color: foreground,
+            letterSpacing: "-0.04em",
+            lineHeight: 1.08,
+            maxWidth: 1000,
           }}
         >
-          {detail}
+          <Words text={title} />
         </div>
-      ) : null}
+        {description ? (
+          <div
+            style={{
+              display: "flex",
+              fontSize: 30,
+              color: muted,
+              lineHeight: 1.4,
+              maxWidth: 920,
+            }}
+          >
+            {description}
+          </div>
+        ) : null}
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          borderTop: `1px solid ${border}`,
+          paddingTop: 28,
+          fontSize: 26,
+          color: muted,
+        }}
+      >
+        <span>{meta ?? ""}</span>
+        <span>{new URL(personalInfo.baseUrl).host}</span>
+      </div>
     </div>,
     {
       ...ogSize,
@@ -83,6 +121,6 @@ export async function renderOgImage({
           weight: 600,
         },
       ],
-    },
+    }
   );
 }
