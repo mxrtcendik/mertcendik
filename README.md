@@ -24,7 +24,7 @@ My personal website. Built with Next.js, TypeScript, and MDX. Live at [cendik.de
 
 ## Getting started
 
-Node.js 20 or newer, and npm.
+Node.js 20.9 or newer, and npm.
 
 ```bash
 git clone https://github.com/mxrtcendik/mertcendik.git
@@ -36,6 +36,40 @@ npm run dev
 Open `http://localhost:3000`.
 
 Personal details live in `lib/constants.ts`: name, title, about, email, and `baseUrl`.
+
+Before opening a pull request, run `npm run lint`, `npm run typecheck`, and `npm run build`. CI runs the same checks.
+
+## Project structure
+
+```
+app/            Routes, metadata, social cards, RSS, sitemap, and the view count API
+components/
+  blog/         Post lists, links, navigation, share button, and view count
+  home/         Sections on the home page
+  layout/       Header, footer links, transitions, and other page-wide pieces
+  mdx/          Components available inside posts, including the demos
+  search/       The ⌘K search menu
+  theme/        Theme provider, toggle, and browser theme color
+  ui/           shadcn components
+content/
+  blog/         Posts, one .mdx file each
+  projects/     Project pages
+lib/            Data loading, constants, types, and helpers
+migrations/     D1 schema for view counts
+scripts/        Build-time scripts
+e2e/            Playwright tests
+public/         Static files
+```
+
+`lib/og-posts.ts` is generated from the posts on every `dev` and `build`. Don't edit it by hand.
+
+## Using this as a starting point
+
+The code is MIT licensed, so you're welcome to fork it. Before deploying your own copy:
+
+1. Change the details in `lib/constants.ts`, and replace the posts and projects in `content/`.
+2. Rename the Worker, R2 bucket, and D1 database in `wrangler.jsonc`, and create your own (see View counts below).
+3. Copy `.env.example` to `.env.local` if you want analytics.
 
 ## Writing posts
 
@@ -69,7 +103,7 @@ npx wrangler d1 migrations apply mertcendik-views --remote
 
 ## Analytics
 
-Cloudflare Web Analytics is off until a token is set. It uses no cookies. To turn it on, add the site in the Cloudflare dashboard under Web Analytics, copy the token from the snippet it shows, and set it at build time:
+Cloudflare Web Analytics is off until a token is set. It uses no cookies. To turn it on, add the site in the Cloudflare dashboard under Web Analytics, copy the token from the snippet it shows, and set it at build time, for example in `.env.local`:
 
 ```bash
 NEXT_PUBLIC_CF_WEB_ANALYTICS_TOKEN=your-token
@@ -96,4 +130,4 @@ That builds the app with OpenNext and deploys it to Cloudflare Workers. To check
 
 ## License
 
-[MIT](LICENSE)
+The code is [MIT](LICENSE) licensed. The Inter font embedded in `lib/og-font.ts` for social cards is under the [SIL Open Font License](https://github.com/rsms/inter/blob/master/LICENSE.txt).
