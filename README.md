@@ -77,6 +77,15 @@ NEXT_PUBLIC_CF_WEB_ANALYTICS_TOKEN=your-token
 
 The Content Security Policy in `next.config.ts` only allows Cloudflare's analytics domains when the token is set.
 
+## Tests
+
+```bash
+npx playwright install chromium   # once
+npm run test:e2e
+```
+
+The tests start the dev server if it isn't running. They check that every page loads without errors and passes axe accessibility checks in both themes, that nothing overflows a phone screen, and the parts that are easy to break: search, page scroll on arrival, old post URLs, demo layout, view counting, and the security headers.
+
 ## Deployment
 
 ```bash

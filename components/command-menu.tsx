@@ -92,12 +92,14 @@ export function CommandMenu() {
         onClick={() => openMenu(true)}
         onPointerEnter={() => void loadDialog()}
         onFocus={() => void loadDialog()}
-        aria-label="Search"
         aria-haspopup="dialog"
         aria-expanded={open}
         className="text-muted-foreground hover:text-foreground focus-visible:ring-ring -my-2.5 flex h-11 cursor-pointer items-center gap-2 rounded-md px-2.5 transition-[color,scale] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:ring-1 focus-visible:outline-none active:scale-[0.97] motion-reduce:active:scale-100"
       >
-        <MagnifyingGlassIcon className="size-5" />
+        {/* The name comes from the content: "Search", plus the shortcut where
+            it's shown, so what people see is part of what they can say. */}
+        <MagnifyingGlassIcon aria-hidden className="size-5" />
+        <span className="sr-only">Search</span>
         {shortcut && (
           <kbd className="border-border hidden rounded border px-1.5 py-0.5 font-sans text-xs [@media(hover:hover)_and_(pointer:fine)]:inline">
             {shortcut}

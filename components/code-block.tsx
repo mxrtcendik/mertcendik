@@ -76,7 +76,7 @@ export function CodeBlock({ children, className }: CodeBlockProps) {
   return (
     <div className="bg-muted my-4 rounded-lg">
       <div className="flex items-center justify-between py-1 pr-1.5 pl-4">
-        <span className="text-muted-foreground text-xs select-none">
+        <span className="text-foreground/60 text-xs select-none">
           {language ?? ""}
         </span>
         <button

@@ -230,6 +230,35 @@
   }
 }
 
+/* GitHub's light theme was made for white. On the gray code background a few
+   of its colors fall under the 4.5:1 contrast minimum, so these are the same
+   hues, darkened just enough to pass. */
+:root:not(.dark)
+  :is(
+    .hljs-doctag,
+    .hljs-keyword,
+    .hljs-meta .hljs-keyword,
+    .hljs-template-tag,
+    .hljs-template-variable,
+    .hljs-type,
+    .hljs-variable.language_
+  ) {
+  color: #ca3745;
+}
+
+:root:not(.dark)
+  :is(.hljs-name, .hljs-quote, .hljs-selector-tag, .hljs-selector-pseudo) {
+  color: #207f37;
+}
+
+:root:not(.dark) :is(.hljs-comment, .hljs-code, .hljs-formula) {
+  color: #677079;
+}
+
+:root:not(.dark) :is(.hljs-built_in, .hljs-symbol) {
+  color: #b84f07;
+}
+
 .dark .hljs {
   color: #c9d1d9;
 }

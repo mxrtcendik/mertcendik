@@ -49,3 +49,6 @@ bun.lock
 .wrangler
 .dev.vars*
 !.dev.vars.example
+# Playwright
+/test-results/
+/playwright-report/
