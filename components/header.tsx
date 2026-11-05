@@ -1,5 +1,6 @@
 "use client";
 
+import { CommandMenu } from "@/components/command-menu";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { personalInfo } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -21,7 +22,10 @@ export function Header({ className }: { className?: string }) {
             {personalInfo.title}
           </p>
         </Link>
-        <ThemeToggle />
+        <div className="flex items-center gap-3">
+          <CommandMenu />
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
