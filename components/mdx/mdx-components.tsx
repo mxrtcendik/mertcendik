@@ -1,4 +1,4 @@
-import { CodeBlock } from "@/components/code-block";
+import { CodeBlock } from "@/components/mdx/code-block";
 import type { MDXComponents } from "mdx/types";
 import Image from "next/image";
 import Link from "next/link";

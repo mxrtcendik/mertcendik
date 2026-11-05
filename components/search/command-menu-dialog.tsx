@@ -1,7 +1,7 @@
 "use client";
 
-import { markScrollToTop } from "@/components/post-link";
-import { useTheme } from "@/components/theme-provider";
+import { markScrollToTop } from "@/components/blog/post-link";
+import { useTheme } from "@/components/theme/theme-provider";
 import { personalInfo, projects, socialLinks } from "@/lib/constants";
 import { ogPosts } from "@/lib/og-posts";
 import { formatDate } from "@/lib/utils";

@@ -1,5 +1,5 @@
 import { getBlogPosts } from "@/lib/blog";
-import { PostLink } from "@/components/post-link";
+import { PostLink } from "@/components/blog/post-link";
 
 interface PostNavigationProps {
   currentSlug: string;

@@ -1,6 +1,6 @@
-import { More } from "@/components/more";
-import { PostList } from "@/components/post-list";
-import { PageTransition } from "@/components/transitions";
+import { More } from "@/components/layout/more";
+import { PostList } from "@/components/blog/post-list";
+import { PageTransition } from "@/components/layout/transitions";
 import { getBlogPosts } from "@/lib/blog";
 import { personalInfo } from "@/lib/constants";
 import type { BlogPost } from "@/lib/types";

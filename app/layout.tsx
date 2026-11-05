@@ -1,9 +1,9 @@
-import { ErrorBoundary } from "@/components/error-boundary";
-import { Analytics } from "@/components/analytics";
-import { Header } from "@/components/header";
-import { SkipToContent } from "@/components/skip-to-content";
-import { ThemeColor } from "@/components/theme-color";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ErrorBoundary } from "@/components/layout/error-boundary";
+import { Analytics } from "@/components/layout/analytics";
+import { Header } from "@/components/layout/header";
+import { SkipToContent } from "@/components/layout/skip-to-content";
+import { ThemeColor } from "@/components/theme/theme-color";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 import { personalInfo } from "@/lib/constants";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";

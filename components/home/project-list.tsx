@@ -1,7 +1,7 @@
 import type { Project } from "@/lib/types";
 import { cardSurface, cn } from "@/lib/utils";
-import { PostLink } from "@/components/post-link";
-import { ProjectTitleTransition } from "@/components/transitions";
+import { PostLink } from "@/components/blog/post-link";
+import { ProjectTitleTransition } from "@/components/layout/transitions";
 import {
   ArrowRightIcon,
   ArrowUpRightIcon,

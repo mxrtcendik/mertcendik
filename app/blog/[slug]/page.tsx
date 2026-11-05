@@ -1,9 +1,9 @@
-import { BackToTop } from "@/components/back-to-top";
-import { ErrorBoundary } from "@/components/error-boundary";
-import { mdxImageComponents } from "@/components/mdx-components";
-import { ScrollToTopOnArrival } from "@/components/post-link";
-import { More } from "@/components/more";
-import { PostNavigation } from "@/components/post-navigation";
+import { BackToTop } from "@/components/layout/back-to-top";
+import { ErrorBoundary } from "@/components/layout/error-boundary";
+import { mdxImageComponents } from "@/components/mdx/mdx-components";
+import { ScrollToTopOnArrival } from "@/components/blog/post-link";
+import { More } from "@/components/layout/more";
+import { PostNavigation } from "@/components/blog/post-navigation";
 import {
   EasingDemo,
   HoldDemo,
@@ -12,12 +12,12 @@ import {
   ResponseDemo,
   ContrastDemo,
   ConfirmDemo,
-} from "@/components/post-demos";
-import { SharePost } from "@/components/share-post";
-import { ViewCount } from "@/components/view-count";
-import { PageTransition, PostTitleTransition } from "@/components/transitions";
-import { Video } from "@/components/video";
-import { YouTube } from "@/components/youtube";
+} from "@/components/mdx/post-demos";
+import { SharePost } from "@/components/blog/share-post";
+import { ViewCount } from "@/components/blog/view-count";
+import { PageTransition, PostTitleTransition } from "@/components/layout/transitions";
+import { Video } from "@/components/mdx/video";
+import { YouTube } from "@/components/mdx/youtube";
 import { getBlogPost, getBlogPosts } from "@/lib/blog";
 import { personalInfo } from "@/lib/constants";
 import { formatDate } from "@/lib/utils";

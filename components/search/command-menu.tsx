@@ -10,7 +10,7 @@ import {
   useSyncExternalStore,
 } from "react";
 
-const loadDialog = () => import("@/components/command-menu-dialog");
+const loadDialog = () => import("@/components/search/command-menu-dialog");
 const CommandMenuDialog = dynamic(loadDialog, { ssr: false });
 
 function subscribeNothing() {

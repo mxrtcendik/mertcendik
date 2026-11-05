@@ -1,4 +1,4 @@
-import { ProjectList } from "@/components/project-list";
+import { ProjectList } from "@/components/home/project-list";
 import { projects } from "@/lib/constants";
 import { getGithubStars } from "@/lib/github";
 

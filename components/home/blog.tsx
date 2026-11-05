@@ -1,4 +1,4 @@
-import { PostList } from "@/components/post-list";
+import { PostList } from "@/components/blog/post-list";
 import { getBlogPosts } from "@/lib/blog";
 import Link from "next/link";
 

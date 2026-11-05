@@ -1,12 +1,12 @@
-import { mdxImageComponents } from "@/components/mdx-components";
-import { More } from "@/components/more";
-import { ScrollToTopOnArrival } from "@/components/post-link";
-import { ConfirmDemo } from "@/components/post-demos";
-import { PostList } from "@/components/post-list";
+import { mdxImageComponents } from "@/components/mdx/mdx-components";
+import { More } from "@/components/layout/more";
+import { ScrollToTopOnArrival } from "@/components/blog/post-link";
+import { ConfirmDemo } from "@/components/mdx/post-demos";
+import { PostList } from "@/components/blog/post-list";
 import {
   PageTransition,
   ProjectTitleTransition,
-} from "@/components/transitions";
+} from "@/components/layout/transitions";
 import { getBlogPost } from "@/lib/blog";
 import { personalInfo } from "@/lib/constants";
 import { getGithubStars } from "@/lib/github";

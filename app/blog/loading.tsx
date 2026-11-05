@@ -1,4 +1,4 @@
-import { PostListSkeleton } from "@/components/post-list-skeleton";
+import { PostListSkeleton } from "@/components/blog/post-list-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowLeftIcon } from "@phosphor-icons/react/ssr";
-import { PageTransition } from "@/components/transitions";
+import { PageTransition } from "@/components/layout/transitions";
 
 export default function NotFound() {
   return (

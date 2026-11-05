@@ -1,7 +1,7 @@
 import type { BlogPost } from "@/lib/types";
 import { cardSurface, cn, formatDate } from "@/lib/utils";
-import { PostLink } from "@/components/post-link";
-import { PostTitleTransition } from "@/components/transitions";
+import { PostLink } from "@/components/blog/post-link";
+import { PostTitleTransition } from "@/components/layout/transitions";
 
 export function PostList({
   posts,
