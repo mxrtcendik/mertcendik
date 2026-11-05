@@ -36,6 +36,7 @@ function Swap({
 
 export function SharePost() {
   const [copied, setCopied] = useState(false);
+  const [used, setUsed] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => () => clearTimeout(timer.current), []);
@@ -44,6 +45,7 @@ export function SharePost() {
     try {
       await navigator.clipboard.writeText(window.location.href);
       setCopied(true);
+      setUsed(true);
       clearTimeout(timer.current);
       timer.current = setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -55,7 +57,7 @@ export function SharePost() {
     <button
       type="button"
       onClick={handleCopy}
-      className="text-muted-foreground hover:text-foreground -my-2 inline-flex items-center gap-1.5 py-2 text-sm transition-colors"
+      className="text-muted-foreground hover:text-foreground -my-2 inline-flex items-center gap-1 py-2 text-sm transition-colors"
       aria-label="Copy link"
       title="Copy link"
     >
@@ -66,13 +68,18 @@ export function SharePost() {
           <CheckCircleIcon className="size-3.5 text-green-600 dark:text-green-500" />
         }
       />
-      <Swap
-        copied={copied}
-        idle="Copy link"
-        done={
-          <span className="text-green-600 dark:text-green-500">Copied</span>
-        }
-      />
+      {copied ? (
+        <span
+          key="copied"
+          className="label-in text-green-600 dark:text-green-500"
+        >
+          Copied
+        </span>
+      ) : (
+        <span key="idle" className={cn(used && "label-in")}>
+          Copy link
+        </span>
+      )}
       <span className="sr-only" aria-live="polite">
         {copied ? "Link copied" : ""}
       </span>
