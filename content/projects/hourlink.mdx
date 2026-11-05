@@ -1,0 +1,17 @@
+---
+post: meeting-time-in-the-url
+---
+
+Hourlink turns a meeting time into a link. There's no account and no database.
+
+The URL is a UTC time, like `/2026-10-29T1100Z`. Whoever opens it sees that moment in their own timezone, and if the sender added their city, the sender's time next to it. The meeting name, its length, and any extra cities are query parameters on the same link, so sending the link is all there is to it.
+
+## What it handles
+
+- **Daylight saving time.** When the clocks go back and an hour happens twice, the page asks which one you mean. When they go forward and an hour is skipped, it moves you to the next real time and tells you.
+- **Up to eight cities.** Each one shows the same moment, and says so when it falls on the next day there.
+- **Meeting length.** 15, 30, 45, 60, or 90 minutes. A link without a length is half an hour.
+
+## How it's built
+
+Next.js on Cloudflare Workers through OpenNext. All the timezone and daylight saving logic lives in one file, `lib/time.ts`.

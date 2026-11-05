@@ -1,0 +1,25 @@
+---
+post: picking-a-fair-meeting-time
+---
+
+Overlap is a small scheduling poll. You pick a few days and a window of hours, share one link, and everyone drags across the times they can make. The page then answers in one sentence, like _"Tue 11:30 AM–1:00 PM works for everyone"_, written in each person's own timezone.
+
+There are no accounts. Creating a poll gives you two links: a public one to share, and a secret one that's the only way to edit or delete the poll.
+
+## What it does
+
+- **Timezones done properly.** Everyone sees the grid in their own timezone, with their own 12- or 24-hour clock and their own first day of the week.
+- **Fair to every timezone.** When times are tied, the one that falls between 08:00 and 21:00 for the most people wins, and the answer says who it's early or late for.
+- **"If needed" answers.** You can mark a time you can make, or one you'd rather not but could.
+- **Fill in from your calendar.** Pick an `.ics` export and every free time gets marked. The file is read in the browser and never uploaded.
+- **Live.** New answers show up on every open page without a reload.
+- **And the rest:** weekly polls, meeting length, people who must be there, deadlines, and a CSV export.
+
+## How it's built
+
+The whole app runs on one Cloudflare Worker: Next.js through OpenNext, D1 for the data, and a Durable Object per poll for live updates.
+
+- **The secret link is never stored.** The database keeps a hash of it, so a copy of the data can't be used to edit anything.
+- **Live updates carry no data.** Each open page only hears "changed", then re-renders on the server for its own viewer.
+- **Working around limits.** D1 accepts at most 100 values per query, so each person's answers are saved as a single JSON value.
+- **Weekly polls are one real week.** They're stored as a reference week, so the rest of the app didn't need to know they were weekly.

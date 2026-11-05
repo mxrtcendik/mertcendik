@@ -25,3 +25,18 @@ export function PostTitleTransition({
     </ViewTransition>
   );
 }
+
+// Same as PostTitleTransition, for a project's name on its card and its page.
+export function ProjectTitleTransition({
+  name,
+  children,
+}: {
+  name: string;
+  children: ReactNode;
+}) {
+  return (
+    <ViewTransition name={`project-title-${name}`} share="morph" default="none">
+      {children}
+    </ViewTransition>
+  );
+}

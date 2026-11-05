@@ -39,7 +39,8 @@ type Item = {
 // runs the action, so searching never has to touch any of the handlers.
 type Action =
   | { type: "page"; href: string }
-  | { type: "post"; slug: string }
+  // A post or project page, opened at the top of the page.
+  | { type: "article"; href: string }
   | { type: "external"; url: string }
   | { type: "theme" }
   | { type: "email" };
@@ -120,7 +121,7 @@ function buildGroups(isDark: boolean, copied: boolean): Group[] {
         keywords: post.description,
         hint: formatDate(post.date, "short"),
         icon: FileTextIcon,
-        action: { type: "post", slug: post.slug },
+        action: { type: "article", href: `/blog/${post.slug}` },
       })),
     },
     {
@@ -131,7 +132,9 @@ function buildGroups(isDark: boolean, copied: boolean): Group[] {
         keywords: project.description,
         hint: project.site ? new URL(project.site).host : "GitHub",
         icon: CubeIcon,
-        action: { type: "external", url: project.site ?? project.url },
+        action: project.page
+          ? { type: "article", href: `/projects/${project.name}` }
+          : { type: "external", url: project.site ?? project.url },
       })),
     },
     {
@@ -238,9 +241,9 @@ export default function CommandMenuDialog({
 
     if (action.type === "page") {
       router.push(action.href);
-    } else if (action.type === "post") {
+    } else if (action.type === "article") {
       markScrollToTop();
-      router.push(`/blog/${action.slug}`);
+      router.push(action.href);
     } else if (action.type === "external") {
       window.open(action.url, "_blank", "noopener,noreferrer");
     } else {

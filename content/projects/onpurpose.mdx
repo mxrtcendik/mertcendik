@@ -1,0 +1,33 @@
+---
+post: a-button-you-have-to-hold
+---
+
+<ConfirmDemo />
+
+onpurpose is a hold-to-confirm button for React. It's for delete, publish, revoke, and send: anything you don't want to happen on a misclick. Hold it for 1.5 seconds and the action runs. Let go early, or just click, and nothing happens.
+
+## Install
+
+```sh
+npm install onpurpose
+```
+
+It works with React 18.3 and 19. There's no provider and no stylesheet to import, and it picks up the font and color of the page it's on.
+
+## Use it
+
+```tsx
+import { HoldButton } from "onpurpose";
+
+<HoldButton onConfirm={() => deleteProject()}>Hold to delete</HoldButton>;
+```
+
+`onConfirm` runs once, at the end of the hold. The label can also be a function, so the words can change as the hold goes:
+
+```tsx
+<HoldButton onConfirm={() => publish()}>
+  {(state) => (state === "confirmed" ? "Published" : "Hold to publish")}
+</HoldButton>
+```
+
+Two CSS custom properties restyle the hold itself: `--hold-fill` for the progress wash and `--hold-confirmed` for the solid color once it completes. The built-in styles sit in their own CSS layer, so your classes win, Tailwind included.

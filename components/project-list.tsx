@@ -1,11 +1,16 @@
 import type { Project } from "@/lib/types";
 import { cardSurface, cn } from "@/lib/utils";
+import { PostLink } from "@/components/post-link";
+import { ProjectTitleTransition } from "@/components/transitions";
 import {
+  ArrowRightIcon,
   ArrowUpRightIcon,
   GithubLogoIcon,
   StarIcon,
 } from "@phosphor-icons/react/ssr";
-import Link from "next/link";
+
+const arrowClass =
+  "text-muted-foreground size-3.5 -translate-x-0.5 translate-y-0.5 opacity-0 transition-[opacity,translate] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-0 group-hover:opacity-100 group-has-[a[data-card]:focus-visible]:translate-0 group-has-[a[data-card]:focus-visible]:opacity-100 motion-reduce:translate-0";
 
 export function ProjectSkeleton() {
   return (
@@ -55,21 +60,32 @@ export function ProjectList({ projects }: { projects: Project[] }) {
           )}
         >
           <div className="flex items-center justify-between gap-4">
-            {/* The ::after stretches this link over the whole card. */}
-            <Link
+            {/* The ::after stretches this link over the whole card. Projects
+                with a page open it here; the rest open their site or repo. */}
+            <PostLink
               data-card
-              href={project.site ?? project.url}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={
+                project.page
+                  ? `/projects/${project.name}`
+                  : (project.site ?? project.url)
+              }
+              {...(project.page
+                ? {}
+                : { target: "_blank", rel: "noopener noreferrer" })}
               className="focus-visible:after:ring-ring inline-flex items-center gap-1 text-base font-medium outline-none after:absolute after:inset-0 after:rounded-lg focus-visible:after:ring-2"
             >
-              {project.name}
-              <ArrowUpRightIcon
-                aria-hidden
-                className="text-muted-foreground size-3.5 -translate-x-0.5 translate-y-0.5 opacity-0 transition-[opacity,translate] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-0 group-hover:opacity-100 group-has-[a[data-card]:focus-visible]:translate-0 group-has-[a[data-card]:focus-visible]:opacity-100 motion-reduce:translate-0"
-              />
-              <span className="sr-only"> (opens in a new tab)</span>
-            </Link>
+              <ProjectTitleTransition name={project.name}>
+                <span>{project.name}</span>
+              </ProjectTitleTransition>
+              {project.page ? (
+                <ArrowRightIcon aria-hidden className={arrowClass} />
+              ) : (
+                <>
+                  <ArrowUpRightIcon aria-hidden className={arrowClass} />
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </>
+              )}
+            </PostLink>
             <div className="flex items-center gap-3">
               {project.site && (
                 // Shown on hover where there is one, always on touch screens.

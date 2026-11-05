@@ -15,6 +15,7 @@ export const projects: Project[] = [
     description: "Find the time everyone can make, in everyone's own timezone.",
     url: "https://github.com/mxrtcendik/overlap",
     site: "https://overlap.cendik.dev",
+    page: true,
   },
   {
     name: "onpurpose",
@@ -22,6 +23,7 @@ export const projects: Project[] = [
       "A hold-to-confirm button for React, for actions you don't want to run by accident.",
     url: "https://github.com/mxrtcendik/onpurpose",
     site: "https://onpurpose.cendik.dev",
+    page: true,
   },
   {
     name: "hourlink",
@@ -29,6 +31,7 @@ export const projects: Project[] = [
       "Share a meeting time as a link. Whoever opens it sees it in their own timezone.",
     url: "https://github.com/mxrtcendik/hourlink",
     site: "https://hourlink.cendik.dev",
+    page: true,
   },
   {
     name: "flarelinker",
