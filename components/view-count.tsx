@@ -3,17 +3,12 @@
 import { EyeIcon } from "@phosphor-icons/react/ssr";
 import { useEffect, useState } from "react";
 
-// One request per post per page load. If the effect runs again (React does
-// this on purpose in development), it reuses the same request instead of
-// counting the visit twice.
 const requests = new Map<string, Promise<number | null>>();
 
 function loadCount(slug: string) {
   const existing = requests.get(slug);
   if (existing) return existing;
 
-  // A visit counts once per post per browser tab session, so reloading or
-  // going back and forth only reads the number.
   const key = `viewed:${slug}`;
   let seen = false;
   try {
@@ -39,7 +34,6 @@ function loadCount(slug: string) {
   return request;
 }
 
-// Shows nothing until the number arrives, or if the request fails.
 export function ViewCount({ slug }: { slug: string }) {
   const [count, setCount] = useState<number | null>(null);
 
@@ -56,9 +50,11 @@ export function ViewCount({ slug }: { slug: string }) {
   if (count === null) return null;
 
   return (
-    <span className="flex items-center gap-1 tabular-nums">
+    <div className="flex items-center gap-1">
       <EyeIcon className="size-3.5" />
-      {count.toLocaleString("en-US")} {count === 1 ? "view" : "views"}
-    </span>
+      <span>
+        {count.toLocaleString("en-US")} {count === 1 ? "view" : "views"}
+      </span>
+    </div>
   );
 }
