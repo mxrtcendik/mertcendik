@@ -1,23 +1,54 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { CheckCircleIcon, LinkIcon } from "@phosphor-icons/react/ssr";
-import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
-const swap = {
-  hidden: { opacity: 0, y: 4 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.15 } },
-  exit: { opacity: 0, y: -4, transition: { duration: 0.12 } },
-};
+// Both states stay rendered on top of each other, and CSS crossfades between
+// them: the old one leaves upward while the new one arrives from below.
+// Reduced motion keeps the fade and drops the slide.
+function Swap({
+  copied,
+  idle,
+  done,
+}: {
+  copied: boolean;
+  idle: ReactNode;
+  done: ReactNode;
+}) {
+  const layer =
+    "col-start-1 row-start-1 transition-[opacity,translate] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:translate-none";
+
+  return (
+    <span className="grid">
+      <span
+        aria-hidden={copied}
+        className={cn(layer, copied && "-translate-y-1 opacity-0")}
+      >
+        {idle}
+      </span>
+      <span
+        aria-hidden={!copied}
+        className={cn(layer, !copied && "translate-y-1 opacity-0")}
+      >
+        {done}
+      </span>
+    </span>
+  );
+}
 
 export function SharePost() {
   const [copied, setCopied] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error("Failed to copy:", err);
     }
@@ -31,63 +62,20 @@ export function SharePost() {
       aria-label="Copy link"
       title="Copy link"
     >
-      {/* "user" turns the slide off when reduced motion is on; the fade stays. */}
-      <MotionConfig reducedMotion="user">
-        <div className="relative size-3.5">
-          <AnimatePresence mode="wait" initial={false}>
-            {copied ? (
-              <motion.div
-                key="check"
-                variants={swap}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="absolute inset-0 flex items-center justify-center"
-              >
-                <CheckCircleIcon className="size-3.5 text-green-600 dark:text-green-500" />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="link"
-                variants={swap}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="absolute inset-0 flex items-center justify-center"
-              >
-                <LinkIcon className="size-3.5" />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-        <div className="relative overflow-hidden">
-          <AnimatePresence mode="wait" initial={false}>
-            {copied ? (
-              <motion.span
-                key="copied-text"
-                variants={swap}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="block text-green-600 dark:text-green-500"
-              >
-                Copied
-              </motion.span>
-            ) : (
-              <motion.span
-                key="copy-text"
-                variants={swap}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="block"
-              >
-                Copy link
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </div>
-      </MotionConfig>
+      <Swap
+        copied={copied}
+        idle={<LinkIcon className="size-3.5" />}
+        done={
+          <CheckCircleIcon className="size-3.5 text-green-600 dark:text-green-500" />
+        }
+      />
+      <Swap
+        copied={copied}
+        idle="Copy link"
+        done={
+          <span className="text-green-600 dark:text-green-500">Copied</span>
+        }
+      />
       <span className="sr-only" aria-live="polite">
         {copied ? "Link copied" : ""}
       </span>
