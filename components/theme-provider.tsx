@@ -4,7 +4,7 @@ import {
   createContext,
   useContext,
   useEffect,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -22,15 +22,11 @@ const ThemeContext = createContext<ThemeContextValue>({
   setTheme: () => {},
 });
 
-function systemTheme() {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-}
+const darkQuery = "(prefers-color-scheme: dark)";
 
-function resolveTheme(theme: Theme) {
-  return theme === "system" ? systemTheme() : theme;
-}
+// Used when localStorage is unavailable, so the toggle still works for this visit.
+let fallbackTheme: Theme = "system";
+const listeners = new Set<() => void>();
 
 function readStoredTheme(): Theme {
   try {
@@ -39,50 +35,57 @@ function readStoredTheme(): Theme {
       return stored;
     }
   } catch {
+    return fallbackTheme;
   }
 
   return "system";
 }
 
-function applyTheme(theme: Theme) {
-  document.documentElement.classList.toggle(
-    "dark",
-    resolveTheme(theme) === "dark",
-  );
+function subscribeTheme(onChange: () => void) {
+  listeners.add(onChange);
+  window.addEventListener("storage", onChange);
+  return () => {
+    listeners.delete(onChange);
+    window.removeEventListener("storage", onChange);
+  };
+}
+
+function subscribeSystem(onChange: () => void) {
+  const media = window.matchMedia(darkQuery);
+  media.addEventListener("change", onChange);
+  return () => media.removeEventListener("change", onChange);
+}
+
+function readSystemTheme() {
+  return window.matchMedia(darkQuery).matches ? "dark" : "light";
+}
+
+function setTheme(next: Theme) {
+  fallbackTheme = next;
+  try {
+    localStorage.setItem("theme", next);
+  } catch {}
+  listeners.forEach((listener) => listener());
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("system");
-  const [resolvedTheme, setResolvedTheme] = useState<
-    "light" | "dark" | undefined
-  >(undefined);
+  const theme = useSyncExternalStore(
+    subscribeTheme,
+    readStoredTheme,
+    () => "system" as const
+  );
+  const system = useSyncExternalStore(
+    subscribeSystem,
+    readSystemTheme,
+    () => undefined
+  );
+  const resolvedTheme =
+    system === undefined ? undefined : theme === "system" ? system : theme;
 
   useEffect(() => {
-    const stored = readStoredTheme();
-    setThemeState(stored);
-    setResolvedTheme(resolveTheme(stored));
-    applyTheme(stored);
-
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => {
-      if (readStoredTheme() !== "system") return;
-      setResolvedTheme(systemTheme());
-      applyTheme("system");
-    };
-
-    media.addEventListener("change", onChange);
-    return () => media.removeEventListener("change", onChange);
-  }, []);
-
-  const setTheme = (next: Theme) => {
-    setThemeState(next);
-    setResolvedTheme(resolveTheme(next));
-    try {
-      localStorage.setItem("theme", next);
-    } catch {
-    }
-    applyTheme(next);
-  };
+    if (!resolvedTheme) return;
+    document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
+  }, [resolvedTheme]);
 
   return (
     <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
