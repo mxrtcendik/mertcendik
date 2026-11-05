@@ -1,0 +1,21 @@
+---
+title: Caching the redirect in flarelinker
+date: 2026-10-27T22:00:00.000Z
+description: Short links are public and cached. Changing them needs auth and is never cached.
+---
+
+[flarelinker](https://github.com/mxrtcendik/flarelinker) is a URL shortener that runs as a Cloudflare Worker. When someone opens `/{slug}`, the worker should do as little as possible: look up the link and redirect. Creating, editing, and deleting links are different requests, and those shouldn't be cheap or anonymous.
+
+So the redirect is public. `GET /{slug}` doesn't need authentication, and neither do `GET /robots.txt` and `GET /api/health`. Everything under `/api/links` does. In production, that check is a Cloudflare Access JWT, and for local testing it's a bearer token. Anyone can follow a short link, but only an authenticated caller can change them. Most of the design follows from that one split.
+
+The redirect is also cached for 60 seconds with Cloudflare's Cache API, so a popular link doesn't hit KV on every request. A minute is long enough to soak up a burst of traffic, and short enough that edits and deletions show up without purging anything by hand.
+
+I don't cache the authenticated API. When you're editing your links, the list and the slug checks have to be up to date. It's fine if a public redirect is a few seconds behind, but the private API has to be exact.
+
+Expiration works the same way. A link can have an `expiresAt` date. If the slug doesn't exist or the date has passed, the worker redirects to the `NOT_FOUND` URL instead of showing a dead page. The root path redirects to `HOMEPAGE`. Both of these are just config, so the worker doesn't need its own pages. It only has to deal with slugs.
+
+A few limits keep each record small. Write requests are capped at 10 KB. A slug is 2 to 64 characters long and can use letters, numbers, underscores, and hyphens. If the caller doesn't send one, the worker generates it. Hit counts go to Analytics Engine and to the record in KV, and the redirect doesn't wait for that write before it responds.
+
+The tests run with Vitest inside the actual Workers runtime, not a mock of it. They cover redirects, caching, auth, and the size limit, since those are the parts that would hurt if they broke. The worker's types are generated from `wrangler.jsonc`, and I don't edit them by hand.
+
+Making short URLs turned out to be the easy part. The real work was deciding which requests get to be fast and public, and which ones have to be exact.

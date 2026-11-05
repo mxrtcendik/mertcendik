@@ -1,0 +1,29 @@
+---
+title: Reduced motion still needs feedback
+date: 2026-10-27T14:00:00.000Z
+description: When someone turns animations off, a button still has to show that it worked.
+---
+
+Click it.
+
+<ResponseDemo />
+
+Nothing moves, but the text and the color change, and that's enough to tell you it worked. When someone turns on reduced motion, they're asking you to remove movement that can make them feel sick. They aren't asking for buttons that don't respond.
+
+So I remove transforms: the scale when you press, things sliding in, a track that moves. I keep whatever tells you the state changed: a color change, a label that switches from "Copy link" to "Copied", and the focus ring, which isn't decoration in the first place. Opacity fades are usually fine too, because they don't move anything across the screen.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: color 150ms ease;
+  }
+
+  .button:active {
+    transform: none;
+  }
+}
+```
+
+The common mistake is one global rule that sets every transition to almost zero, and then shipping it as is. If a button's only feedback was the scale on press, that feedback is now gone and nothing replaces it. The people who asked for less motion end up getting less information.
+
+I go through it control by control. If movement was the only thing confirming an action, I add some other kind of confirmation before I turn the movement off. The interface should still feel like it heard you.

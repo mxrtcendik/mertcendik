@@ -1,0 +1,27 @@
+---
+title: A button you have to hold
+date: 2026-10-30T19:30:00.000Z
+description: In onpurpose, a quick click does nothing. You have to hold it.
+---
+
+Try clicking it, then try holding it until it fills.
+
+<ConfirmDemo />
+
+[onpurpose](https://onpurpose.cendik.dev) is a hold-to-confirm button for React. It's meant for the actions you really don't want to trigger by accident: delete, publish, revoke, or send. You hold it for 1.5 seconds and then the action runs. If you let go early, nothing happens. If you just click it, nothing happens either.
+
+That last part took the most thought. Clicking is what a button normally does, and a screen reader activates a button with a click. It can't hold a pointer down for a second and a half. So I had to decide whether a click should count as a confirm, and I decided it shouldn't. Otherwise a double-tap could delete something. With the keyboard, Space and Enter only confirm if you actually hold the key down.
+
+A short press is still a normal click, and it still bubbles up. This matters more than it sounds. Say the button sits at the end of a project row, and clicking the row opens the project. A completed hold doesn't fire a click, so deleting the project doesn't also open it on the way out. If you drag off the button, the hold cancels. Moving back onto it won't pick up where you left off, and releasing outside the button never confirms.
+
+You can't change the 1.5 seconds with a prop. The fill crosses the button in exactly that time, so the part that's still empty tells you how long is left. When you let go, the fill eases back in 200ms. While you're pressing, the button scales down to `0.97`.
+
+With reduced motion turned on, the scale goes away and an early release snaps back instead of easing. The fill still moves, though. Without it, holding and clicking would look exactly the same, and the person who asked for less motion would have no way to see that the hold is working.
+
+```tsx
+import { HoldButton } from "onpurpose";
+
+<HoldButton onConfirm={() => deleteProject()}>Hold to delete</HoldButton>
+```
+
+There's no provider and no stylesheet to import. It picks up the font and color of whatever page it's on. `onConfirm` runs once, at the end, and the button doesn't wait for it. If your action is a network request, the button is ready again while the request is still in flight, so disable it until the request finishes. Otherwise someone can hold it a second time.

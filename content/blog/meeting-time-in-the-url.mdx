@@ -1,0 +1,15 @@
+---
+title: Putting the meeting time in the URL
+date: 2026-10-30T18:00:00.000Z
+description: hourlink has no database. The whole meeting time lives in the link.
+---
+
+[hourlink](https://hourlink.cendik.dev) doesn't have accounts or a database. The meeting time lives in the URL.
+
+`/2026-10-29T1100Z` means 11:00 UTC on that day, and whoever opens it sees that time in their own timezone. The meeting name, its length, and any extra cities are query parameters on the same link. Nothing gets saved anywhere. Sending the link is the whole product.
+
+I put a UTC time in the path because "Tuesday at 3pm" doesn't mean anything until you say whose Tuesday. With UTC, two people are looking at the exact same moment, just on two different clocks. If the link includes the sender's city, you still see your own time first, with the sender's time next to it. Any other cities on the link show that same moment again, and if it falls on the next day somewhere, that row says so. You can add up to eight cities.
+
+Daylight saving time is where clocks get tricky. When the clocks go back, the same hour happens twice, so a time like 1:30 can mean two different moments. In that case, the page tells you the hour happens twice and lets you pick which one you mean. When the clocks go forward, an hour gets skipped. If you pick a time inside that gap, the page moves you to the next real time and tells you the one you entered doesn't exist that day. The URL only ever holds one UTC time, so it can never point to a time that didn't happen.
+
+Meetings are 30 minutes by default. You can also pick 15, 45, 60, or 90, and a link without a length is half an hour.

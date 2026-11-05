@@ -1,0 +1,41 @@
+---
+title: The default is what people ship
+date: 2026-10-26
+description: Most people never open the options, so the default has to be the good version.
+---
+
+Someone finds a component, pastes in the example, and decides in about a minute whether to keep it. They almost never look at the options. If the default is too slow, or the default styling clashes with their page, that's the version they ship. Adding a `duration` prop doesn't fix a bad first impression. It just makes the mistake configurable.
+
+This is the kind of setup I want to copy:
+
+```tsx
+<Toaster />
+
+toast("Saved");
+```
+
+And this is the kind I close the tab on:
+
+```tsx
+<ToastProvider duration={4000} position="bottom-right" theme="system">
+  <ToastViewport />
+  {children}
+</ToastProvider>
+
+const { toast } = useToast();
+toast({ title: "Saved", duration: 4000 });
+```
+
+The second one can do more, but the first one is the one people actually try. You mount it in one place and call one function. There's no provider to wrap around your app before you can see anything. Any friction at the start is a design bug.
+
+Timing, easing, stacking, and how far things move: those decisions belong to whoever built the component. I don't expose them unless a real product needs something different. If every one of them becomes a prop, the component ends up with a second personality, and it's usually worse than the first.
+
+The page where people try it out matters as much as the API. A screenshot of a toast only claims it works. A button on that page, with the code right next to it, lets you see for yourself. I want to press it before I install anything.
+
+The name is part of that first minute too. A name that sounds like a filename is easy to search for but hard to remember. A name with some personality is the other way around. I'll take that trade when I want people to ask for it by name.
+
+The work that makes a default feel finished is the stuff nobody puts on a landing page. Pausing a timer when the tab is hidden. Keeping hover working when items move around. Capturing the pointer during a drag so it doesn't cancel when you leave the element. Ignoring a second finger so the position doesn't jump. None of these are features on their own, but together they're why people keep the component in their app.
+
+The motion should match the component's personality too. Something playful can move a bit further and stay on screen a bit longer. A dense tool should be fast and almost plain. I pick one curve for the component and don't offer five more as props.
+
+I always look at it again the next day, at full speed and slowed down. The version I liked at midnight is usually a few frames late, or the exit is as slow as the enter. Adding another prop wouldn't have fixed that either.

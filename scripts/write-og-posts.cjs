@@ -14,9 +14,10 @@ for (const name of fs.readdirSync(dir)) {
   posts[slug] = {
     title: typeof data.title === "string" ? data.title : slug,
     date: data.date ? new Date(data.date).toISOString() : "",
+    description: typeof data.description === "string" ? data.description : "",
   };
 }
 
-const source = `export const ogPosts: Record<string, { title: string; date: string }> = ${JSON.stringify(posts, null, 2)};\n`;
+const source = `export const ogPosts: Record<string, { title: string; date: string; description: string }> = ${JSON.stringify(posts, null, 2)};\n`;
 
 fs.writeFileSync(path.join(process.cwd(), "lib", "og-posts.ts"), source);

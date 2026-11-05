@@ -1,0 +1,43 @@
+---
+title: Making a button feel pressed
+date: 2026-10-23
+description: A small scale on press, the right curve, and what to leave out.
+---
+
+Press the button.
+
+<PressDemo />
+
+That small scale is the entire animation. It goes down to `0.97` over 160ms. The label shrinks along with the button, because `scale()` affects everything inside the element. A physical button works the same way. The text doesn't stay full size while the rest of the button sinks.
+
+I never go below `0.95`. Past that, the button starts to look like it's dodging your cursor. `0.97` is enough to feel, and small enough that a quick click doesn't look like a bounce.
+
+```css
+.button {
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+```
+
+The curve needs to move right away. `ease-in` barely moves at the start, which is exactly when the person is looking. Ease-out moves first and then settles. The built-in `ease-out` is still a little soft for this, so I use `cubic-bezier(0.23, 1, 0.32, 1)`, which gets there faster.
+
+Only transition `transform`. If you write `transition: all`, the color, the shadow, and anything else that changes on hover will also get dragged along at 160ms.
+
+Hover is a separate thing, and it needs a media query. Touch screens trigger hover when you tap, so a hover effect can stay stuck after your finger is gone.
+
+```css
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    background: var(--hover);
+  }
+}
+```
+
+For a color change on hover, a plain `ease` at around 150ms is fine. I don't lift the button or add a growing shadow. On something people click all day, that just feels like decoration.
+
+If the label changes too, say from "Copy" to "Copied", I crossfade the text. If the two labels overlap and look like a double exposure, adding a blur of about 2px during the swap makes them read as one change. Keep the blur small, though. Larger blurs get expensive, especially in Safari.
+
+With reduced motion, I keep the color change and drop the scale. The press still needs a visible response, it just doesn't have to move. The scale and the label do different jobs anyway. The scale tells you the click landed, and the label tells you the state changed.

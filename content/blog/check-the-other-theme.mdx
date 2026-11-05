@@ -1,0 +1,17 @@
+---
+title: Always check the other theme
+date: 2026-10-27T20:00:00.000Z
+description: A gray that looks fine on a dark background can almost disappear on a light one.
+---
+
+These two bars use different grays. Switch the theme and look at them again.
+
+<ContrastDemo />
+
+One of them uses the theme's muted color. On a dark background it stands out clearly. On a white background it's so close to the page color that a track, a code chip, or a loading skeleton can look unfinished. The other one is mixed from the foreground color at about 8%. It stays visible in both themes because it's defined as a step away from the background, not as a fixed gray that happened to look right in whichever theme I built first.
+
+I usually design in one theme, but I check the other one before I call anything done. Not with a screenshot at the end of the week, but on the same screen, toggled back and forth while I'm still working on it. The things that break are almost always the subtle ones: a border at 8% white, a hover state you can barely see, a placeholder color I only ever tested on black.
+
+Text needs more contrast than a decorative bar. Body text should meet contrast guidelines in both themes. A track only has to be visible, but I still want to see it without squinting.
+
+If a color only works in one theme, it isn't really part of the design yet. It's still part of the mockup.

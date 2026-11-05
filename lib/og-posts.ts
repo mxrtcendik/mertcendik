@@ -1,46 +1,62 @@
-export const ogPosts: Record<string, { title: string; date: string }> = {
-  "a-click-does-nothing": {
-    "title": "A Click Does Nothing",
-    "date": "2026-10-30T19:30:00.000Z"
+export const ogPosts: Record<string, { title: string; date: string; description: string }> = {
+  "a-button-you-have-to-hold": {
+    "title": "A button you have to hold",
+    "date": "2026-10-30T19:30:00.000Z",
+    "description": "In onpurpose, a quick click does nothing. You have to hold it."
   },
-  "bigger-than-the-icon": {
-    "title": "Bigger Than the Icon",
-    "date": "2026-10-27T08:00:00.000Z"
+  "caching-the-redirect": {
+    "title": "Caching the redirect in flarelinker",
+    "date": "2026-10-27T22:00:00.000Z",
+    "description": "Short links are public and cached. Changing them needs auth and is never cached."
   },
-  "cache-the-redirect": {
-    "title": "Cache the Redirect",
-    "date": "2026-10-27T22:00:00.000Z"
+  "check-the-other-theme": {
+    "title": "Always check the other theme",
+    "date": "2026-10-27T20:00:00.000Z",
+    "description": "A gray that looks fine on a dark background can almost disappear on a light one."
   },
-  "clip-path": {
-    "title": "Clip the Change",
-    "date": "2026-10-25T00:00:00.000Z"
+  "make-the-target-bigger": {
+    "title": "Make the target bigger than the icon",
+    "date": "2026-10-27T08:00:00.000Z",
+    "description": "A 16px icon is fine. A 16px hit area isn't."
   },
-  "keep-a-response": {
-    "title": "Keep a Response",
-    "date": "2026-10-27T14:00:00.000Z"
+  "making-a-button-feel-pressed": {
+    "title": "Making a button feel pressed",
+    "date": "2026-10-23T00:00:00.000Z",
+    "description": "A small scale on press, the right curve, and what to leave out."
+  },
+  "meeting-time-in-the-url": {
+    "title": "Putting the meeting time in the URL",
+    "date": "2026-10-30T18:00:00.000Z",
+    "description": "hourlink has no database. The whole meeting time lives in the link."
+  },
+  "picking-a-fair-meeting-time": {
+    "title": "Picking a fair meeting time",
+    "date": "2026-11-05T00:00:00.000Z",
+    "description": "How overlap ranks times, and why it tells you when one is late for someone."
+  },
+  "reduced-motion-feedback": {
+    "title": "Reduced motion still needs feedback",
+    "date": "2026-10-27T14:00:00.000Z",
+    "description": "When someone turns animations off, a button still has to show that it worked."
+  },
+  "revealing-with-clip-path": {
+    "title": "Revealing things with clip-path",
+    "date": "2026-10-25T00:00:00.000Z",
+    "description": "One inset() rectangle for a progress fill, a tab indicator, or a slider."
   },
   "should-this-animate": {
-    "title": "Should This Animate?",
-    "date": "2026-10-22T00:00:00.000Z"
+    "title": "Should this animate?",
+    "date": "2026-10-22T00:00:00.000Z",
+    "description": "Before choosing a curve, think about how many times a day someone will see it."
   },
-  "the-default": {
-    "title": "The Default Is the Product",
-    "date": "2026-10-26T00:00:00.000Z"
+  "the-default-is-what-ships": {
+    "title": "The default is what people ship",
+    "date": "2026-10-26T00:00:00.000Z",
+    "description": "Most people never open the options, so the default has to be the good version."
   },
-  "the-first-frames": {
-    "title": "Watch the First Frames",
-    "date": "2026-10-24T00:00:00.000Z"
-  },
-  "the-link-is-the-time": {
-    "title": "The Link Is the Time",
-    "date": "2026-10-30T18:00:00.000Z"
-  },
-  "the-other-theme": {
-    "title": "Check the Other Theme",
-    "date": "2026-10-27T20:00:00.000Z"
-  },
-  "the-press": {
-    "title": "The Press Is the Animation",
-    "date": "2026-10-23T00:00:00.000Z"
+  "why-ease-in-feels-slow": {
+    "title": "Why ease-in feels slow",
+    "date": "2026-10-24T00:00:00.000Z",
+    "description": "The curves and durations I use, and why the start of a transition matters most."
   }
 };

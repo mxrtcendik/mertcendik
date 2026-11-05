@@ -1,0 +1,40 @@
+---
+title: Why ease-in feels slow
+date: 2026-10-24
+description: The curves and durations I use, and why the start of a transition matters most.
+---
+
+Hover over each track. Both take 400ms, but one of them feels late.
+
+<EasingDemo />
+
+`ease-in` starts slowly and then rushes to catch up. People judge a transition by its first few frames, so that slow start is most of what they notice. A dropdown with `ease-in` at 300ms feels heavier than the same dropdown with ease-out at 300ms. The duration is the same. The slow part has just moved to the moment people are watching.
+
+I don't use `ease-in` for interface motion at all. What I use instead depends on what's moving:
+
+- **Something entering or leaving:** ease-out. It responds right away, then settles.
+- **Something already on screen that moves or changes shape:** ease-in-out, so it speeds up and slows down instead of slamming into the end.
+- **A hover or a color change:** `ease`.
+- **Constant motion, like a marquee or a progress fill:** `linear`.
+
+The built-in curves are too gentle for UI, so I keep three of my own:
+
+```css
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+```
+
+`--ease-drawer` is the sheet curve from Ionic. It comes in fast and then settles, which is exactly what a panel sliding up from the bottom should do. I'd rather use a curve someone has already tuned than draw one that looks great on a graph and wrong in the product. [easing.dev](https://easing.dev) and [easings.co](https://easings.co) are where I look before making my own.
+
+Duration is the other half, and I almost always end up shorter than my first guess. A press is 100–160ms. A tooltip or small popover is 125–200ms. A menu is 150–250ms. A dialog or drawer is 200–500ms, and only the ones that travel far get the upper end. A menu at 180ms feels much quicker than the same menu at 400ms, even though it's doing exactly the same thing.
+
+Enter and exit don't have to take the same time. The [hold-to-confirm button](/blog/revealing-with-clip-path) fills over about two seconds on `linear` while you decide, then snaps back in 200ms if you let go. It's slow while the person is deciding, and fast once the interface is responding.
+
+Springs solve a different problem: drags, gestures you can reverse halfway, anything that should keep its momentum when it's interrupted. A CSS keyframe animation starts over from zero when you interrupt it. A transition can change its target. A spring keeps its current speed and settles from there, which is why a drawer you flick closed feels right on a spring.
+
+I still wouldn't use a spring on a menu opened from the keyboard. [How often someone sees it](/blog/should-this-animate) matters more than the curve. Even a good curve is a delay when you trigger it all day.
+
+When a transition feels off and I can't tell why, I slow it down to four or five times its duration, or step through it in the browser's Animations panel. At full speed, a wrong origin, a crossfade that shows two objects at once, or a curve that stalls at the start are easy to miss. Slowed down, they're obvious. I fix it there, then put the duration back.

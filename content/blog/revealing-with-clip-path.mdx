@@ -1,0 +1,35 @@
+---
+title: Revealing things with clip-path
+date: 2026-10-25
+description: One inset() rectangle for a progress fill, a tab indicator, or a slider.
+---
+
+Hold the button. Let go before it fills, then try again and hold it all the way.
+
+<HoldDemo />
+
+The color is already there at full width the whole time. The only thing that changes is the clip. `inset(top right bottom left)` cuts into the element from each edge, so `inset(0 100% 0 0)` hides everything from the right, and `inset(0 0 0 0)` shows all of it. The values are percentages of the element, so the same CSS works on a button, an image, or a panel, and you never have to measure anything in pixels.
+
+While you hold the button, the clip opens over about two seconds with linear timing, so the fill shows real progress. If you let go early, it closes in 200ms with an ease-out. The button also scales to `0.97` while it's pressed. I keep the fill and the scale separate on purpose. The fill shows how far along the decision is, and the scale tells you the press registered.
+
+```css
+.confirm-fill {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.button:active .confirm-fill {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 2s linear;
+}
+```
+
+You could fade the fill in with opacity instead, but then the whole surface changes at once. A clip moves in a direction, so you can see where the new state is coming from.
+
+The same trick works for a tab indicator that changes the text color cleanly. Render the row of tabs twice. Style the top copy as the active state, with a different background and text color, and clip it so only the active tab shows through. When the selection changes, animate the clip. If you try transitioning `color` on each label instead, the timing never quite matches, and you see the old color and the new one as two separate steps. With the clip, it's one shape sliding across a row that's already fully painted.
+
+A before-and-after slider on a photo uses the same property. Stack the two images, clip the top one with `inset(0 50% 0 0)`, and update that right edge as the user drags. You don't need an extra mask element. The clip also stays on the compositor, which starts to matter when the images are large.
+
+For movement like this, I animate `clip-path`, `transform`, and `opacity`, and I don't touch `width`. Animating a bar's width forces a layout on every frame. Clipping a bar that's already full width doesn't.
+
+One last thing: `transform-origin` has no effect here. The inset values decide where the reveal starts. If it comes from the wrong side, the inset is wrong, not the easing.

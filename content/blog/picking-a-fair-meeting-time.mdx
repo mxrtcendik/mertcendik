@@ -1,0 +1,21 @@
+---
+title: Picking a fair meeting time
+date: 2026-11-05
+description: How overlap ranks times, and why it tells you when one is late for someone.
+---
+
+[overlap](https://overlap.cendik.dev) is a small scheduling poll. You pick a few days and a window of hours, share one link, and everyone drags across the times they can make. There are no accounts. The part I spent the most time on is what happens after that: turning a grid full of answers into one sentence, like *"Tue 11:30 AM–1:00 PM works for everyone"*.
+
+The obvious way to rank times is to count how many people can make each one. That's where overlap starts, but it isn't enough on its own.
+
+People can mark a time in two ways: one they can make, or one they'd rather not but could. So the best time is the one the most people can make, and among those, the one where the fewest people only said "could". If two times both work for everyone, the one nobody has to stretch for wins.
+
+Then there's the meeting length. If the meeting takes 90 minutes, a half hour where everyone happens to be free doesn't help. The best times are stretches everyone can stay for the whole meeting. The owner can also mark someone as required, and then only stretches when that person is free count at all.
+
+The part I care about most is timezones. Each answer remembers the timezone of the device it came from. When two times are otherwise tied, overlap picks the one that falls between 08:00 and 21:00 for the most people. And when the best time is still bad for someone, the answer says so: *"Wed 3:00–4:00 PM works for everyone, though it's 11:00 PM for Aiko."*
+
+I could have hidden that. The sentence would be shorter, and the time would technically still work for everyone. But "works for everyone" isn't quite true if one person is joining at 11 at night, and the group should know that before they lock it in.
+
+Saving someone's timezone is also something they should know about. Anyone who can see the poll could work out that hour, so the form says plainly that the timezone is saved.
+
+Everyone still sees the grid in their own timezone, with their own 12- or 24-hour clock and their own first day of the week. The ranking happens on real moments in time, not on what the clock says in one place, so it's the same answer for everyone, just written in different clocks.
