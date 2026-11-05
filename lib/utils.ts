@@ -7,13 +7,25 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatDate(date: string) {
+// long: "October 30, 2026", medium: "Oct 30, 2026", short: "Oct 30".
+export function formatDate(
+  date: string,
+  style: "long" | "medium" | "short" = "long"
+) {
   if (!date) return "";
 
   return new Date(date).toLocaleDateString("en-US", {
+    year: style === "short" ? undefined : "numeric",
+    month: style === "long" ? "long" : "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+export function formatMonth(date: string) {
+  return new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
-    day: "numeric",
     timeZone: "UTC",
   });
 }
@@ -38,3 +50,8 @@ export function calculateReadingTime(content: string) {
 
   return `${minutes} min read`;
 }
+
+// Hover styles shared by the project and post cards. Each card adds its own
+// press styles, since Tailwind needs those class names written out in full.
+export const cardSurface =
+  "rounded-lg p-4 transition-[background-color,scale] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-surface-hover";
