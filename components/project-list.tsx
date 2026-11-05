@@ -1,5 +1,10 @@
 import type { Project } from "@/lib/types";
-import { StarIcon } from "@phosphor-icons/react/ssr";
+import { cardSurface, cn } from "@/lib/utils";
+import {
+  ArrowUpRightIcon,
+  GithubLogoIcon,
+  StarIcon,
+} from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 
 export function ProjectSkeleton() {
@@ -13,7 +18,7 @@ export function ProjectSkeleton() {
         Projects
       </h2>
       {Array.from({ length: 2 }).map((_, index) => (
-        <div key={index} className="space-y-2 rounded-lg p-4">
+        <div key={index} className="-mx-4 space-y-2 rounded-lg p-4">
           <div className="flex items-center justify-between gap-4">
             <div className="bg-foreground/10 h-5 w-28 animate-pulse rounded-md" />
             <div className="bg-foreground/10 h-4 w-8 animate-pulse rounded-md" />
@@ -26,31 +31,65 @@ export function ProjectSkeleton() {
   );
 }
 
+function Stars({ count }: { count?: number | null }) {
+  if (typeof count !== "number" || count < 1) return null;
+
+  return (
+    <span className="text-muted-foreground inline-flex items-center gap-1 text-sm tabular-nums">
+      <StarIcon className="size-3" weight="fill" />
+      {count.toLocaleString("en-US")}
+      <span className="sr-only"> stars on GitHub</span>
+    </span>
+  );
+}
+
 export function ProjectList({ projects }: { projects: Project[] }) {
   return (
-    <div className="space-y-3">
+    <div className="-mx-4 space-y-3">
       {projects.map((project) => (
-        <Link
+        <div
           key={project.name}
-          href={project.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:bg-muted-foreground/10 block rounded-lg p-4 transition-[background-color] duration-150"
+          className={cn(
+            "group has-[a[data-card]:active]:bg-surface-active relative has-[a[data-card]:active]:scale-[0.99] motion-reduce:has-[a[data-card]:active]:scale-100",
+            cardSurface
+          )}
         >
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-            <div className="text-base font-medium">{project.name}</div>
-            {typeof project.stars === "number" && (
-              <div className="text-muted-foreground inline-flex items-center gap-1 text-sm tabular-nums">
-                <StarIcon className="size-3.5" weight="fill" />
-                {project.stars.toLocaleString("en-US")}
-              </div>
-            )}
+          <div className="flex items-center justify-between gap-4">
+            {/* The ::after stretches this link over the whole card. */}
+            <Link
+              data-card
+              href={project.site ?? project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="focus-visible:after:ring-ring inline-flex items-center gap-1 text-base font-medium outline-none after:absolute after:inset-0 after:rounded-lg focus-visible:after:ring-2"
+            >
+              {project.name}
+              <ArrowUpRightIcon
+                aria-hidden
+                className="text-muted-foreground size-3.5 -translate-x-0.5 translate-y-0.5 opacity-0 transition-[opacity,translate] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-0 group-hover:opacity-100 group-has-[a[data-card]:focus-visible]:translate-0 group-has-[a[data-card]:focus-visible]:opacity-100 motion-reduce:translate-0"
+              />
+              <span className="sr-only"> (opens in a new tab)</span>
+            </Link>
+            <div className="flex items-center gap-3">
+              {project.site && (
+                // Shown on hover where there is one, always on touch screens.
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${project.name} on GitHub (opens in a new tab)`}
+                  className="text-muted-foreground hover:text-foreground focus-visible:ring-ring relative -m-3 rounded-md p-3 transition-[color,opacity,scale] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] outline-none group-hover:opacity-100 group-has-[a[data-card]:focus-visible]:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 active:scale-[0.9] motion-reduce:active:scale-100 [@media(hover:hover)]:opacity-0"
+                >
+                  <GithubLogoIcon className="size-4" />
+                </a>
+              )}
+              <Stars count={project.stars} />
+            </div>
           </div>
-          <div className="text-muted-foreground mt-0.5 text-sm">
+          <div className="text-muted-foreground mt-1 text-sm">
             {project.description}
           </div>
-          <span className="sr-only"> (opens in a new tab)</span>
-        </Link>
+        </div>
       ))}
     </div>
   );

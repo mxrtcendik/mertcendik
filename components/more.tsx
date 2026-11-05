@@ -9,7 +9,7 @@ import {
 import type { Icon } from "@phosphor-icons/react";
 
 const linkClass =
-  "text-muted-foreground hover:text-foreground inline-flex items-center gap-2 transition-colors";
+  "text-muted-foreground hover:text-foreground -my-2 inline-flex items-center gap-2 py-2 transition-colors";
 
 const icons: Record<string, Icon> = {
   GitHub: GithubLogoIcon,

@@ -1,5 +1,5 @@
 import { getBlogPosts } from "@/lib/blog";
-import Link from "next/link";
+import { PostLink } from "@/components/post-link";
 
 interface PostNavigationProps {
   currentSlug: string;
@@ -20,28 +20,38 @@ export function PostNavigation({ currentSlug }: PostNavigationProps) {
   return (
     <nav className="border-border mt-12 flex items-center justify-between gap-4 border-t pt-8">
       {prevPost ? (
-        <Link
+        <PostLink
           href={`/blog/${prevPost.slug}`}
           className="group flex flex-col items-start gap-1"
         >
           <span className="text-muted-foreground text-xs">Previous</span>
-          <span className="text-sm font-medium group-hover:underline">
-            ← {prevPost.title}
+          <span className="text-sm font-medium">
+            <span className="inline-block transition-[translate] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-x-0.5 motion-reduce:translate-none">
+              ←
+            </span>{" "}
+            <span className="underline-offset-4 group-hover:underline">
+              {prevPost.title}
+            </span>
           </span>
-        </Link>
+        </PostLink>
       ) : (
         <div />
       )}
       {nextPost ? (
-        <Link
+        <PostLink
           href={`/blog/${nextPost.slug}`}
           className="group flex flex-col items-end gap-1 text-right"
         >
           <span className="text-muted-foreground text-xs">Next</span>
-          <span className="text-sm font-medium group-hover:underline">
-            {nextPost.title} →
+          <span className="text-sm font-medium">
+            <span className="underline-offset-4 group-hover:underline">
+              {nextPost.title}
+            </span>{" "}
+            <span className="inline-block transition-[translate] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-0.5 motion-reduce:translate-none">
+              →
+            </span>
           </span>
-        </Link>
+        </PostLink>
       ) : (
         <div />
       )}

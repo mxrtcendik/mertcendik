@@ -1,9 +1,20 @@
 import { BackToTop } from "@/components/back-to-top";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { mdxImageComponents } from "@/components/mdx-components";
+import { ScrollToTopOnArrival } from "@/components/post-link";
+import { More } from "@/components/more";
 import { PostNavigation } from "@/components/post-navigation";
-import { EasingDemo, HoldDemo, PressDemo, HitDemo, ResponseDemo, ContrastDemo, ConfirmDemo } from "@/components/post-demos";
+import {
+  EasingDemo,
+  HoldDemo,
+  PressDemo,
+  HitDemo,
+  ResponseDemo,
+  ContrastDemo,
+  ConfirmDemo,
+} from "@/components/post-demos";
 import { SharePost } from "@/components/share-post";
+import { PageTransition, PostTitleTransition } from "@/components/transitions";
 import { Video } from "@/components/video";
 import { YouTube } from "@/components/youtube";
 import { getBlogPost, getBlogPosts } from "@/lib/blog";
@@ -98,7 +109,7 @@ export default async function BlogPost({
     headline: post.title,
     datePublished: post.date,
     dateModified: post.date,
-    description: post.content.slice(0, 160).replace(/\s+/g, " ").trim(),
+    description: post.description,
     url: `${personalInfo.baseUrl}/blog/${slug}`,
     author: {
       "@type": "Person",
@@ -108,48 +119,56 @@ export default async function BlogPost({
 
   return (
     <ErrorBoundary>
-      <article className="mt-12 space-y-6">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <Link
-          href="/blog"
-          className="text-muted-foreground hover:text-foreground mb-4 inline-flex items-center gap-1.5 text-sm"
-        >
-          <ArrowLeftIcon className="size-3.5" />
-          Back
-        </Link>
-        <div className="space-y-4">
-          <h1 className="text-3xl font-medium tracking-tight sm:text-4xl">
-            {post.title}
-          </h1>
-          <div className="text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-            {post.date && (
-              <time dateTime={post.date}>{formatDate(post.date)}</time>
-            )}
-            {post.readingTime && (
-              <div className="flex items-center gap-1">
-                <ClockIcon className="size-3.5" />
-                <span>{post.readingTime}</span>
-              </div>
-            )}
-            <SharePost />
-          </div>
-        </div>
-        <div className="prose space-y-4">
-          <MDXRemote
-            source={post.content}
-            components={mdxComponents}
-            options={{
-              mdxOptions: {
-                rehypePlugins: [rehypeHighlight],
-              },
-            }}
+      <ScrollToTopOnArrival />
+      <PageTransition>
+        <article className="mt-12 space-y-6">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
           />
+          <Link
+            href="/blog"
+            className="text-muted-foreground hover:text-foreground -mt-2 mb-2 inline-flex items-center gap-1.5 py-2 text-sm"
+          >
+            <ArrowLeftIcon className="size-3.5" />
+            Back
+          </Link>
+          <div className="space-y-4">
+            <PostTitleTransition slug={slug}>
+              <h1 className="w-fit text-3xl font-medium tracking-tight sm:text-4xl">
+                {post.title}
+              </h1>
+            </PostTitleTransition>
+            <div className="text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+              {post.date && (
+                <time dateTime={post.date}>{formatDate(post.date)}</time>
+              )}
+              {post.readingTime && (
+                <div className="flex items-center gap-1">
+                  <ClockIcon className="size-3.5" />
+                  <span>{post.readingTime}</span>
+                </div>
+              )}
+              <SharePost />
+            </div>
+          </div>
+          <div className="prose space-y-4">
+            <MDXRemote
+              source={post.content}
+              components={mdxComponents}
+              options={{
+                mdxOptions: {
+                  rehypePlugins: [rehypeHighlight],
+                },
+              }}
+            />
+          </div>
+          <PostNavigation currentSlug={slug} />
+        </article>
+        <div className="mt-16">
+          <More />
         </div>
-        <PostNavigation currentSlug={slug} />
-      </article>
+      </PageTransition>
       <BackToTop />
     </ErrorBoundary>
   );

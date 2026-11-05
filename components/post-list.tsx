@@ -1,35 +1,51 @@
 import type { BlogPost } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
-import Link from "next/link";
+import { cardSurface, cn, formatDate } from "@/lib/utils";
+import { PostLink } from "@/components/post-link";
+import { PostTitleTransition } from "@/components/transitions";
 
-export function PostList({ posts }: { posts: BlogPost[] }) {
+export function PostList({
+  posts,
+  dateStyle = "medium",
+}: {
+  posts: BlogPost[];
+  dateStyle?: "medium" | "short";
+}) {
   return (
-    <div className="space-y-3">
+    <div className="-mx-4 space-y-3">
       {posts.map((post) => (
-        <Link
+        <PostLink
           key={post.slug}
           href={`/blog/${post.slug}`}
-          className="hover:bg-muted-foreground/10 block rounded-lg p-4 transition-[background-color] duration-150"
+          className={cn(
+            "active:bg-surface-active block active:scale-[0.99] motion-reduce:active:scale-100",
+            cardSurface
+          )}
         >
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-              <div className="text-base font-medium">{post.title}</div>
+          <div className="space-y-1">
+            {/* A long title wraps and the date stays on the right, so every
+                row has the same shape. */}
+            <div className="flex items-baseline justify-between gap-4">
+              <PostTitleTransition slug={post.slug}>
+                <div className="min-w-0 text-base font-medium">
+                  {post.title}
+                </div>
+              </PostTitleTransition>
               {post.date && (
                 <time
                   dateTime={post.date}
                   className="text-muted-foreground shrink-0 text-sm"
                 >
-                  {formatDate(post.date)}
+                  {formatDate(post.date, dateStyle)}
                 </time>
               )}
             </div>
             {post.description && (
-              <p className="text-muted-foreground line-clamp-2 text-sm leading-relaxed">
+              <p className="text-muted-foreground line-clamp-2 text-sm">
                 {post.description}
               </p>
             )}
           </div>
-        </Link>
+        </PostLink>
       ))}
     </div>
   );

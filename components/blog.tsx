@@ -26,7 +26,7 @@ export function Blog() {
         {posts.length > preview.length && (
           <Link
             href="/blog"
-            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+            className="text-muted-foreground hover:text-foreground -my-2 inline-block py-2 text-sm transition-colors"
           >
             View all
           </Link>

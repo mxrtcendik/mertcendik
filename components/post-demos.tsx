@@ -6,7 +6,7 @@ const easeOut = "cubic-bezier(0.23, 1, 0.32, 1)";
 
 export function PressDemo() {
   return (
-    <div className="my-6">
+    <div className="demo-stage">
       <button
         type="button"
         className="bg-foreground text-background rounded-md px-3 py-1.5 text-sm active:scale-[0.97]"
@@ -20,7 +20,7 @@ export function PressDemo() {
 
 export function EasingDemo() {
   return (
-    <div className="my-6 space-y-4">
+    <div className="demo-stage demo-stage-wide">
       <EasingRow label="ease-in" easing="ease-in" />
       <EasingRow label="ease-out" easing={easeOut} />
       <style>{`
@@ -70,7 +70,7 @@ function EasingRow({ label, easing }: { label: string; easing: string }) {
 
 export function HoldDemo() {
   return (
-    <div className="my-6">
+    <div className="demo-stage">
       <button type="button" className="hold-demo">
         <span className="hold-demo-fill" aria-hidden="true" />
         <span className="relative">Hold to confirm</span>
@@ -107,7 +107,7 @@ export function HoldDemo() {
 
 export function ConfirmDemo() {
   const [phase, setPhaseState] = useState<"idle" | "holding" | "confirmed">(
-    "idle",
+    "idle"
   );
   const [pressed, setPressed] = useState(false);
   const [result, setResult] = useState("A click does nothing.");
@@ -140,7 +140,7 @@ export function ConfirmDemo() {
   }
 
   return (
-    <div className="my-6">
+    <div className="demo-stage">
       <button
         type="button"
         className="confirm-demo"
@@ -202,7 +202,7 @@ export function ConfirmDemo() {
           {phase === "confirmed" ? "Deleted" : "Hold to delete"}
         </span>
       </button>
-      <p className="text-muted-foreground mt-3 text-sm" aria-live="polite">
+      <p className="text-muted-foreground text-sm" aria-live="polite">
         {result}
       </p>
       <style>{`
@@ -249,24 +249,33 @@ export function ConfirmDemo() {
 
 export function HitDemo() {
   return (
-    <div className="my-6 flex flex-wrap items-end gap-10">
-      <div>
-        <div className="text-muted-foreground mb-2 text-sm">16px</div>
-        <button
-          type="button"
-          aria-label="Small target"
-          className="bg-foreground block size-4 rounded-sm"
-        />
-      </div>
-      <div>
-        <div className="text-muted-foreground mb-2 text-sm">44px</div>
-        <button
-          type="button"
-          aria-label="Adequate target"
-          className="flex size-11 items-center justify-center"
-        >
-          <span className="bg-foreground block size-4 rounded-sm" />
-        </button>
+    <div className="demo-stage">
+      <div className="flex items-end gap-10">
+        <div>
+          <div className="text-muted-foreground mb-2 text-center text-sm">
+            16px
+          </div>
+          {/* Same 44px row as the other one, so the two icons line up. */}
+          <div className="flex size-11 items-center justify-center">
+            <button
+              type="button"
+              aria-label="Small target"
+              className="bg-foreground block size-4 rounded-sm"
+            />
+          </div>
+        </div>
+        <div>
+          <div className="text-muted-foreground mb-2 text-center text-sm">
+            44px
+          </div>
+          <button
+            type="button"
+            aria-label="Large target"
+            className="flex size-11 items-center justify-center"
+          >
+            <span className="bg-foreground block size-4 rounded-sm" />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -276,14 +285,17 @@ export function ResponseDemo() {
   const [copied, setCopied] = useState(false);
 
   return (
-    <div className="my-6">
+    <div className="demo-stage">
       <button
         type="button"
-        onClick={() => setCopied(true)}
+        onClick={() => {
+          setCopied(true);
+          // Reset so the demo can be tried again.
+          setTimeout(() => setCopied(false), 2000);
+        }}
         className={
-          copied
-            ? "text-sm text-green-600 dark:text-green-500"
-            : "text-foreground text-sm"
+          "border-border min-h-9 rounded-md border px-3 text-sm " +
+          (copied ? "text-green-600 dark:text-green-500" : "text-foreground")
         }
       >
         {copied ? "Copied" : "Copy link"}
@@ -294,7 +306,7 @@ export function ResponseDemo() {
 
 export function ContrastDemo() {
   return (
-    <div className="my-6 space-y-4">
+    <div className="demo-stage demo-stage-wide demo-stage-plain">
       <div>
         <div className="text-muted-foreground mb-1.5 text-sm">
           Close to the page

@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react/ssr";
+import { cn } from "@/lib/utils";
 import { useRef, useState } from "react";
 
 interface CodeBlockProps {
@@ -27,6 +28,28 @@ function extractCodeText(node: React.ReactNode): string {
   return "";
 }
 
+const languageNames: Record<string, string> = {
+  css: "CSS",
+  html: "HTML",
+  js: "JavaScript",
+  jsx: "JSX",
+  ts: "TypeScript",
+  tsx: "TSX",
+  json: "JSON",
+  bash: "Shell",
+  sh: "Shell",
+};
+
+// rehype-highlight puts the language on the <code> inside, as "language-css".
+function getLanguage(node: React.ReactNode): string | null {
+  if (!node || typeof node !== "object" || !("props" in node)) return null;
+  const className = (node as { props?: { className?: string } }).props
+    ?.className;
+  const match = className?.match(/language-([\w-]+)/);
+  if (!match) return null;
+  return languageNames[match[1]] ?? match[1].toUpperCase();
+}
+
 export function CodeBlock({ children, className }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const preRef = useRef<HTMLPreElement>(null);
@@ -46,24 +69,39 @@ export function CodeBlock({ children, className }: CodeBlockProps) {
     }
   };
 
+  const language = getLanguage(children);
+
+  // The label and copy button get their own row above the code. Floating over
+  // it, they covered long lines on narrow screens.
   return (
-    <div className="group relative">
-      <pre ref={preRef} className={className}>
+    <div className="bg-muted my-4 rounded-lg">
+      <div className="flex items-center justify-between py-1 pr-1.5 pl-4">
+        <span className="text-muted-foreground text-xs select-none">
+          {language ?? ""}
+        </span>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="text-muted-foreground hover:text-foreground hover:bg-foreground/8 rounded-md p-2 transition-[color,scale] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97] motion-reduce:active:scale-100"
+          aria-label="Copy code"
+          title="Copy code"
+        >
+          {copied ? (
+            <CheckIcon className="h-4 w-4 text-green-600 dark:text-green-500" />
+          ) : (
+            <CopyIcon className="h-4 w-4" />
+          )}
+          <span className="sr-only" aria-live="polite">
+            {copied ? "Copied" : ""}
+          </span>
+        </button>
+      </div>
+      <pre
+        ref={preRef}
+        className={cn(className, "m-0 rounded-none bg-transparent pt-0")}
+      >
         {children}
       </pre>
-      <button
-        type="button"
-        onClick={handleCopy}
-        className="bg-background/80 text-muted-foreground hover:text-foreground border-border absolute top-2 right-2 rounded-md border p-2 transition-colors"
-        aria-label="Copy code"
-        title="Copy code"
-      >
-        {copied ? (
-          <CheckIcon className="h-4 w-4 text-green-500" />
-        ) : (
-          <CopyIcon className="h-4 w-4" />
-        )}
-      </button>
     </div>
   );
 }
