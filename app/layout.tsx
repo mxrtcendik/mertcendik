@@ -1,4 +1,5 @@
 import { ErrorBoundary } from "@/components/error-boundary";
+import { Analytics } from "@/components/analytics";
 import { Header } from "@/components/header";
 import { SkipToContent } from "@/components/skip-to-content";
 import { ThemeColor } from "@/components/theme-color";
@@ -97,6 +98,7 @@ export default function RootLayout({
             </main>
           </ErrorBoundary>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

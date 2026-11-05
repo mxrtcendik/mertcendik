@@ -14,7 +14,52 @@ const renamedPosts: Record<string, string> = {
   "the-press": "making-a-button-feel-pressed",
 };
 
+const isDev = process.env.NODE_ENV === "development";
+const analytics =
+  Boolean(process.env.NEXT_PUBLIC_CF_WEB_ANALYTICS_TOKEN) && !isDev;
+
+// Inline scripts are allowed because Next.js and the theme script use them.
+// Everything else is limited to this site, plus YouTube embeds and Cloudflare
+// Web Analytics when it's turned on.
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline'${analytics ? " https://static.cloudflareinsights.com" : ""}${isDev ? " 'unsafe-eval'" : ""}`,
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob: https:",
+  "media-src 'self' https:",
+  "font-src 'self'",
+  `connect-src 'self'${analytics ? " https://cloudflareinsights.com" : ""}${isDev ? " ws: wss:" : ""}`,
+  "frame-src https://www.youtube.com https://www.youtube-nocookie.com",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  ...(isDev ? [] : ["upgrade-insecure-requests"]),
+].join("; ");
+
+const securityHeaders = [
+  { key: "Content-Security-Policy", value: contentSecurityPolicy },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+  },
+  ...(isDev
+    ? []
+    : [
+        {
+          key: "Strict-Transport-Security",
+          value: "max-age=63072000; includeSubDomains",
+        },
+      ]),
+];
+
 const nextConfig: NextConfig = {
+  async headers() {
+    return [{ source: "/:path*", headers: securityHeaders }];
+  },
   async redirects() {
     return Object.entries(renamedPosts).map(([from, to]) => ({
       source: `/blog/${from}`,
