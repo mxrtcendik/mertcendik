@@ -27,6 +27,15 @@
 			"bucket_name": "mertcendik-next-cache"
 		}
 	],
+	"d1_databases": [
+		{
+			// Post view counts. The table is created by migrations/0001_views.sql.
+			"binding": "VIEWS_DB",
+			"database_name": "mertcendik-views",
+			"database_id": "d1008db5-bb4a-4811-a506-e9bf7872f142",
+			"migrations_dir": "migrations"
+		}
+	],
 	"images": {
 		// Enable image optimization
 		// see https://opennext.js.org/cloudflare/howtos/image

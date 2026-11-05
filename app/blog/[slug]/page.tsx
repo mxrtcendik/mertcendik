@@ -14,6 +14,7 @@ import {
   ConfirmDemo,
 } from "@/components/post-demos";
 import { SharePost } from "@/components/share-post";
+import { ViewCount } from "@/components/view-count";
 import { PageTransition, PostTitleTransition } from "@/components/transitions";
 import { Video } from "@/components/video";
 import { YouTube } from "@/components/youtube";
@@ -150,6 +151,8 @@ export default async function BlogPost({
                 </div>
               )}
               <SharePost />
+              {/* Last, since it appears after loading and would push the rest. */}
+              <ViewCount slug={slug} />
             </div>
           </div>
           <div className="prose space-y-4">
