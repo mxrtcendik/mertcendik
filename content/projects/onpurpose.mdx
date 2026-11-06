@@ -4,7 +4,7 @@ post: a-button-you-have-to-hold
 
 <ConfirmDemo />
 
-onpurpose is a hold-to-confirm button for React. It's for delete, publish, revoke, and send: anything you don't want to happen on a misclick. Hold it for 1.5 seconds and the action runs. Let go early, or just click, and nothing happens.
+onpurpose is a hold-to-confirm button for React, for the actions you don't want on a misclick: delete, publish, revoke, send. Hold it for 1.5 seconds and the action runs. Let go early, or just click, and nothing happens.
 
 ## Install
 
@@ -22,12 +22,18 @@ import { HoldButton } from "onpurpose";
 <HoldButton onConfirm={() => deleteProject()}>Hold to delete</HoldButton>;
 ```
 
-`onConfirm` runs once, at the end of the hold. The label can also be a function, so the words can change as the hold goes:
+`onConfirm` runs once, when the hold completes. If it's a request, return its promise: the button stays busy until it settles and won't start a second hold. The label can be a function, so the words can follow the hold:
 
 ```tsx
-<HoldButton onConfirm={() => publish()}>
-  {(state) => (state === "confirmed" ? "Published" : "Hold to publish")}
+<HoldButton onConfirm={() => archiveProject()}>
+  {(state, { busy }) =>
+    busy ? "Archiving…" : state === "confirmed" ? "Archived" : "Hold to archive"
+  }
 </HoldButton>
 ```
 
-Two CSS custom properties restyle the hold itself: `--hold-fill` for the progress wash and `--hold-confirmed` for the solid color once it completes. The built-in styles sit in their own CSS layer, so your classes win, Tailwind included.
+Three CSS custom properties restyle the hold: `--hold-fill` for the progress wash, `--hold-confirmed` for the solid color when it completes, and `--hold-confirmed-text` for the label on top of it. The built-in styles sit in Tailwind's `components` layer, so your classes and Tailwind utilities win.
+
+## The details
+
+Most of the work is in what you don't see. A second finger is ignored. Dragging off, switching tabs or pressing Escape cancels. A quick click never submits a form. Screen reader users, who can't hold a button, confirm by activating it twice, and every phrase they hear can be translated. It's tested in Chromium, Firefox and WebKit, on React 18 and 19.
